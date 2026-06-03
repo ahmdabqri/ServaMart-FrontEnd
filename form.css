@@ -1,0 +1,56 @@
+@media (max-width: 768px){
+
+    .form-container{
+        width: 90%;
+        padding: 20px;
+    }
+
+}
+
+.form-container{
+    width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.form-container input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd ;
+    border-radius: 8px;
+}
+
+.form-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.form-container button:hover{
+    opacity: 0.85;
+}
+
+.form-group{
+    margin-bottom: 15px;
+}
+
+.form-group label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.btn-primary{
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}

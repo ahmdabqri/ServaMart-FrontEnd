@@ -1,0 +1,50 @@
+@media (max-width:768px){
+    .product-grid{
+        justify-content: center;
+    }
+
+    .product-card,
+    .service-card{
+        width: 90%;
+        max-width: 320px;
+    }
+}
+
+.product-card{
+    width: 250px;
+    background: white;
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product-image{
+    height: 180px;
+    background: #ddd;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-card h3{
+    margin-top: 10px;
+}
+
+.product-card p{
+    margin: 10px 0;
+}
+
+.product-card button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.product-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
