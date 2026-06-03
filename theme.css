@@ -1,0 +1,17 @@
+:root{
+    --primary-blue:#0606A8;
+    --secondary-blue:#4C5EFF;
+    --light-bg:#EAEAEA;
+
+    --white:#FFFFFF;
+    --text-dark:#333333;
+}
+
+.servamart-bg{
+    background: linear-gradient(
+        180deg,
+        #0606A8 0%,
+        #4C5EFF 50%,
+        #EAEAEA 100%
+    );
+}
