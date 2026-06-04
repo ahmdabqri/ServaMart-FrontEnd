@@ -4,26 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Form</title>
-    <link rel="stylesheet" href="form.css">
+    <link rel="stylesheet" href="login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     
-    <div class="form-container">
+    <div class="login-container">
 
-        <h2>Login</h2>
+        <div class="login-banner">
+
+            <div class="banner-content">
+                <h1>Welcome to <br> UTeM ServaMart</h1>
+                <p>Buy,Sell,Service in one place</p>
+            </div>
+        </div>
+
+       <div class="login-form-section">
+
+    <h1 class="logo">
+        UTeM <br> ServaMart
+    </h1>
+
+    <h2>Welcome Back !</h2>
+
+    <p>
+        Don't have account ?
+        <a href="register.html">Create new now !</a>
+    </p>
+
+    <form class="login-form">
 
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" id="email" placeholder="Your Email">
         </div>
-        
+
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" id="password" placeholder="Your Password">
         </div>
+
         <button class="btn-primary">Login</button>
 
-    </div>
+    </form>
+
+    <p class="forgot-password">
+        Forgot Password ? <a href="#">Click Here</a>
+    </p>
+
+</div>
 
 </body>
 </html>
