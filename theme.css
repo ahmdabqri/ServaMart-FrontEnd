@@ -11,7 +11,10 @@
     background: linear-gradient(
         180deg,
         #0606A8 0%,
-        #4C5EFF 50%,
+        #4C5EFF 60%,
         #EAEAEA 100%
     );
+
+    min-height: 100vh;
+    padding: 30px;
 }
