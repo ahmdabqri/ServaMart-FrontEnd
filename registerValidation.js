@@ -65,7 +65,31 @@ registerForm.addEventListener("submit", function(event){
 
     if(isValid){
         alert("Registration Successful!");
-        window.location.href = "homepage.html";
+        window.location.href = "login.html";
     }
+
+});
+
+const toggleButtons = document.querySelectorAll(".togglePassword");
+
+toggleButtons.forEach(button => {
+
+    button.addEventListener("click", function(){
+
+        const input =
+            this.parentElement.querySelector("input");
+
+        if(input.type === "password"){
+
+            input.type = "text";
+            this.src = "image/eye-svgrepo-com.svg";
+
+        }else{
+
+            input.type = "password";
+            this.src = "image/eye-slash-svgrepo-com.svg";
+        }
+
+    });
 
 });
