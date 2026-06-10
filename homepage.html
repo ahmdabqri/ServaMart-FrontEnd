@@ -6,12 +6,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="card.css">
     <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="category.css">
     <link rel="stylesheet" href="spotlight.css">
+    
 
     <title>Home Page ServaMart</title>
 </head>
@@ -22,7 +24,7 @@
 
     <div class="search-container">
         <img src="image/search.svg.svg" alt="Search" class="search-icon">
-        <input type="text" placeholder="Search">
+        <input type="text" id="search-input" placeholder="Search">
     </div>
 
     <div class="nav-menu">
@@ -60,7 +62,7 @@
         <section class="spotlight-section">
 
             <div class="spotlight-card">
-                <div class="spotlight-image"></div>
+                <div class="spotlight-image"><img src="image/product 1.jpg" alt="Spotlight Product"></div>
 
                 <div class="spotlight-info">
                     <h2>Gaming Mouse</h2>
@@ -69,7 +71,7 @@
             </div>
 
             <div class="spotlight-card">
-                <div class="spotlight-image"></div>
+                <div class="spotlight-image"><img src="image/service 1.jpg" alt="Spotlight Service"></div>
 
                 <div class="spotlight-info">
                     <h2>Tutor Programming</h2>
@@ -83,13 +85,13 @@
         <section class="category-section">
 
             <div class="category-card">
-                <div class="category-icon"></div>
+                <div class="category-icon"><img src="image/preloved.jpg"></div>
                 <h3>Preloved</h3>
                 
             </div>
 
             <div class="category-card">
-                <div class="category-icon"></div>
+                <div class="category-icon"><img src="image/service.jpg"></div>
                 <h3>Service</h3>
             </div>
 
@@ -101,10 +103,13 @@
             
             
         <div class="product-grid">
+            <p id="noResult" class="no-result">
+                No product found
+            </p>
 
              <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 1.jpg">
                 </div>
 
                 <h3>Gaming Mouse</h3>
@@ -114,7 +119,7 @@
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 1.jpg">
                 </div>
 
                 <h3>Tutor Programming</h3>
@@ -124,7 +129,7 @@
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 2.jpg">
                 </div>
 
                 <h3>Mechanical Keyboard</h3>
@@ -134,70 +139,50 @@
 
              <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 2.jpg">
                 </div>
 
-                <h3>Tutor Programming</h3>
-                <p>RM 50.00</p>
+                <h3>Laundry</h3>
+                <p>RM 15.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 3.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Desporte Futsal Shoes</h3>
+                <p>RM 300.00</p>
                 <button>View Details</button>
             </div>
 
              <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 3.jpg">
                 </div>
 
-                <h3>Tutor Programming</h3>
-                <p>RM 50.00</p>
+                <h3>Personal Shopper</h3>
+                <p>RM 10.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 4.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Wallet</h3>
+                <p>RM 50.00</p>
                 <button>View Details</button>
             </div>
 
              <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 4.jpg">
                 </div>
 
-                <h3>Tutor Programming</h3>
-                <p>RM 50.00</p>
-                <button>Book Now</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    Product
-                </div>
-
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>View Details</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    Service
-                </div>
-
-                <h3>Tutor Programming</h3>
+                <h3>Phone Repair</h3>
                 <p>RM 50.00</p>
                 <button>Book Now</button>
             </div>
@@ -208,6 +193,7 @@
 
     </div>
       
+    <script src="main.js"></script>
 </body>
 
 <footer class="footer">
