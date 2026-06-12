@@ -49,6 +49,11 @@
     align-items: center;
 
     font-size: 12px;
+    transition: 0.3s ease;
+}
+
+.nav-menu a:hover{
+    transform:translateY(-3px);
 }
 
 .sell-button{
@@ -56,11 +61,14 @@
     border-radius: 20px;
     padding: 8px 18px;
     cursor: pointer;
+    transition:0.3s ease;
 }
 
 .sell-button:hover{
     background: #3D4FFF;
     color: white;
+    transform:translateY(-3px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
 .search-container{
