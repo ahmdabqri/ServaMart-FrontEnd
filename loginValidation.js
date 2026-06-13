@@ -2,8 +2,6 @@ const loginForm = document.getElementById("login-formValidation");
 
 loginForm.addEventListener("submit", function(event){
 
-    event.preventDefault();
-
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
 
@@ -39,9 +37,8 @@ loginForm.addEventListener("submit", function(event){
         isValid = false;
     }
 
-    if(isValid){
-        alert("Login Successful!");
-        window.location.href = "homepage.html";
+     if(!isValid){
+        event.preventDefault();
     }
 
 });

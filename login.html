@@ -34,11 +34,12 @@
         <a href="register.html">Create new now !</a>
     </p>
 
-    <form class="login-form" id="login-formValidation">
+    <form class="login-form" id="login-formValidation" action="login.php"
+      method="POST">
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Your Email">
+            <input type="email" id="email" name="email" placeholder="Your Email">
             <small id="emailError" class="error"></small>
         </div>
 
@@ -46,7 +47,7 @@
             <label for="password">Password</label>
 
             <div class="password-wrapper">
-                <input type="password" id="password" placeholder="Your Password" autocomplete="current-password">
+                <input type="password" id="password" name="password" placeholder="Your Password" autocomplete="current-password">
 
                  <img src="image/eye-slash-svgrepo-com.svg"
                        id="togglePassword"

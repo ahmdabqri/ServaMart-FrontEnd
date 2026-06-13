@@ -2,15 +2,36 @@
 
     .cart-content{
         flex-direction:column;
+        gap:20px;
+    }
+
+    .cart-summary{
+        width:100%;
+        position:static;
+        order:-1;
     }
 
     .cart-item{
         flex-direction:column;
+        text-align:center;
+        align-items:center;
     }
 
     .cart-item img{
+        width:180px;
+        height:180px;
+    }
+
+    .item-details{
         width:100%;
-        height:250px;
+    }
+
+    .quantity{
+        justify-content:center;
+    }
+
+    .item-checkbox{
+        align-self:flex-start;
     }
 
 }
