@@ -8,14 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="navbar.css">
-    <link rel="stylesheet" href="card.css">
     <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="theme.css">
-    <link rel="stylesheet" href="productDetail.css">
-    <link rel="stylesheet" href="spotlight.css">
+    <link rel="stylesheet" href="bookings.css">
     
 
-    <title>Product Detail </title>
+    <title>My Bookings Page ServaMart</title>
 </head>
 
 <header>
@@ -28,19 +26,19 @@
     </div>
 
     <div class="nav-menu">
-        <button class="sell-button">SELL</button>
+        <a href="sell.html"><button class="sell-button">SELL</button></a>
 
-        <a href="#">
+        <a href="userProfile.html">
             <img src="image/profile-round-1342-svgrepo-com.svg">
             <span>Profile</span>
         </a>
 
-        <a href="#">
+        <a href="cart.html">
             <img src="image/cart-shopping-svgrepo-com.svg">
             <span>Cart</span>
         </a>
 
-        <a href="#">
+        <a href="chat.html">
             <img src="image/message-circle-chat-svgrepo-com.svg">
             <span>Message</span>
         </a>
@@ -54,56 +52,50 @@
 </nav>
 </header>
 <body>
-      
-    <section class="product-detail-container">
 
-    <div class="product-gallery">
+    <div class="servamart-bg">
+        <div class="booking-filter">
 
-        <img src="image/service 2.jpg" class="main-image">
+    <button class="active-booking">
+        All
+    </button>
 
-        <div class="thumbnail-container">
-            <img src="image/service 2.jpg" class="thumbnail">
-            <img src="image/service detail 1.jpg" class="thumbnail">
-            <img src="image/service detail 2.jpg" class="thumbnail">
-        </div>
+    <button>
+        Upcoming
+    </button>
 
-    </div>
+    <button>
+        Past
+    </button>
 
-    <div class="product-info">
+</div>
 
-        <h1>Laundry Service</h1>
+<div class="booking-card">
 
-        <p class="price">RM 15.00 / 8Kg </p>
+    <img src="image/service 3.jpg">
 
-        <p>Provider : Ahmad</p>
+    <div class="booking-info">
 
-        <p>Availability : Everyday</p>
+        <h3>Personal Shopper</h3>
 
-        <p>Location : UTeM Main Campus</p>
+        <p>RM80.00</p>
 
-        <div class="description">
-            <h3>Description</h3>
+        <p>20 June 2026</p>
 
-            <p>Spend your weekend living, not doing laundry. We wash, dry, and fold your clothes in under 24 hours so you can focus on what matters most.Fast, fresh, and straight to your door.</p>
-        </div>
+        <p class="booking-time">11.00 AM</p>
 
-        <div class="action-button">
-
-        <a href="bookingService.html"><button class="cart-btn">
-            Book Service
-        </button></a>
-
-        <button class="contact-btn">
-        Contact Seller
-        </button>
-
-        </div>
+        <span class="booking-status upcoming">
+            Upcoming
+        </span>
 
     </div>
 
-</section>
-    
-<script src="productDetail.js"></script>
+    <button class="rebook-btn">
+        Rebook
+    </button>
+
+</div>
+ </div>
 </body>
 
 <footer class="footer">

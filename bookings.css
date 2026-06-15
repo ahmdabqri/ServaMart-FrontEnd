@@ -1,0 +1,162 @@
+@media(max-width:768px){
+
+    .booking-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .booking-card img{
+
+        width:100%;
+
+        height:200px;
+
+        margin-bottom:15px;
+    }
+
+    .booking-info{
+
+        margin-left:0;
+    }
+
+    .rebook-btn{
+
+        width:100%;
+
+        margin-top:15px;
+    }
+
+}
+
+.booking-container{
+
+    max-width:1200px;
+
+    margin:40px auto;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:15px;
+}
+
+.booking-status{
+
+    display:inline-block;
+
+    margin-top:10px;
+
+    padding:6px 12px;
+
+    border-radius:20px;
+
+    font-size:14px;
+}
+
+.upcoming{
+
+    background:#d1f0ff;
+
+    color:#005f7a;
+}
+
+.completed{
+
+    background:#d4edda;
+
+    color:#155724;
+}
+
+.cancelled{
+
+    background:#f8d7da;
+
+    color:#721c24;
+}
+
+.booking-filter{
+
+    display:flex;
+
+    gap:10px;
+
+    margin-bottom:25px;
+}
+
+.booking-filter button{
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:20px;
+
+    background:#eee;
+
+    cursor:pointer;
+}
+
+.active-booking{
+
+    background:black !important;
+
+    color:white;
+}
+
+.booking-card{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:20px;
+
+    background:#f8f8f8;
+
+    border-radius:15px;
+
+    margin-bottom:20px;
+}
+
+.booking-card img{
+
+    width:100px;
+
+    height:100px;
+
+    object-fit:cover;
+
+    border-radius:10px;
+}
+
+.booking-info{
+
+    flex:1;
+
+    margin-left:20px;
+}
+
+.booking-info h3{
+
+    margin-bottom:10px;
+}
+
+.rebook-btn{
+
+    border:none;
+
+    background:black;
+
+    color:white;
+
+    padding:10px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}
