@@ -1,0 +1,202 @@
+@media(max-width:768px){
+
+    .sell-container{
+        padding:15px;
+        margin:20px auto;
+    }
+
+    .sell-form{
+        padding:20px;
+    }
+
+    .sell-form h2{
+        text-align:center;
+    }
+
+    .type-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .type-buttons button{
+
+        width:100%;
+
+    }
+
+     .condition-buttons{
+
+        flex-direction:column;
+
+    }
+
+    .condition-buttons button{
+
+        width:100%;
+
+    }
+
+      .photo-upload{
+
+        display:grid;
+
+        grid-template-columns:
+        repeat(3,1fr);
+
+        gap:10px;
+
+    }
+
+    .photo-box{
+
+        width:70px;
+        height:70px;
+
+    }
+
+      .form-group input,
+    .form-group select,
+    .form-group textarea{
+
+        font-size:16px;
+
+    }
+
+      .post-btn{
+
+        width:100%;
+
+        padding:15px;
+
+    }
+
+}
+
+.sell-container{
+    max-width:1000px;
+    margin:40px auto;
+    padding:20px;
+}
+
+.sell-form{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+}
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-weight:600;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+}
+
+.type-buttons,
+.condition-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.type-buttons button,
+.condition-buttons button{
+    padding:10px 20px;
+    border:none;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.active{
+    background:#000;
+    color:white;
+}
+
+.photo-upload{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.photo-box{
+
+    width:120px;
+    height:120px;
+
+    border:2px dashed #ccc;
+    border-radius:10px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+
+    position:relative;
+    overflow:hidden;
+}
+
+.uploadText{
+    font-size:50px;
+    font-weight:600;
+    color:#999;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top: 20px;
+}
+
+.photo-box:hover{
+
+    border-color:black;
+
+    transform:scale(1.03);
+
+    transition:0.3s;
+}
+
+
+.previewImage{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+}
+
+
+.post-btn{
+    width:100%;
+    padding:15px;
+    background:black;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.error{
+    color:red;
+    font-size:14px;
+    display:block;
+    margin-top:5px;
+}
+
+.active-condition{
+    background:black;
+    color:white;
+}
