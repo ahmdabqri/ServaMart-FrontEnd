@@ -2,7 +2,7 @@ const registerForm = document.getElementById("register-formValidation");
 
 registerForm.addEventListener("submit", function(event){
 
-    event.preventDefault();
+    
 
     const userName = document.getElementById("userName").value.trim();
     const email = document.getElementById("email").value.trim();
@@ -62,6 +62,12 @@ registerForm.addEventListener("submit", function(event){
         passwordError.textContent = "Password must be at least 6 characters";
         isValid = false;
     }
+
+    if(isValid){
+
+    registerForm.submit();
+
+}
 
 
 });

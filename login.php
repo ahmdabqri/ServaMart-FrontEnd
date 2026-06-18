@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 include 'config.php';
 
 if(isset($_POST['loginBtn'])){
@@ -7,32 +9,58 @@ if(isset($_POST['loginBtn'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $checkUser = mysqli_query(
-        $conn,
-        "SELECT * FROM userr
-         WHERE email='$email'
-         AND password='$password'"
-    );
+    $sql =
+    "SELECT * FROM userr
+    WHERE email='$email'
+    AND password='$password'";
 
-    if(mysqli_num_rows($checkUser) > 0){
+    $result =
+    mysqli_query($conn,$sql);
+
+    if(mysqli_num_rows($result) > 0){
+
+        $user =
+        mysqli_fetch_assoc($result);
+
+        $_SESSION['user_id'] =
+        $user['user_id'];
+
+        $_SESSION['name'] =
+        $user['name'];
+
+        $_SESSION['role'] =
+        $user['role'];
+
+        if($user['role'] == 'admin'){
+
+            header(
+            "Location: adminDashboard.php"
+            );
+
+        }
+        else{
+
+            header(
+            "Location: homepage.php"
+            );
+
+        }
+
+        exit();
+
+    }
+    else{
 
         echo "
         <script>
-            alert('Login Successful');
-            window.location.href='homepage.php';
-        </script>
-        ";
-
-    }else{
-
-        echo "
-        <script>
-            alert('Invalid Email or Password');
+        alert('Invalid Email or Password');
         </script>
         ";
 
     }
+
 }
+
 ?>
 
 <!DOCTYPE html>
