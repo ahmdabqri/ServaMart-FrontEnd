@@ -63,10 +63,6 @@ registerForm.addEventListener("submit", function(event){
         isValid = false;
     }
 
-    if(isValid){
-        alert("Registration Successful!");
-        window.location.href = "login.html";
-    }
 
 });
 
