@@ -1,22 +1,138 @@
 <?php
 
-$email = $_POST["email"];
-$password = $_POST["password"];
+session_start();
 
-if($email == "d032410278@student.utem.edu.my" && $password == "12345678")
-{
-    header("Location: homepage.html");
-    exit();
-}
-else
-{
-    echo "
-    <script>
+include 'config.php';
+
+if(isset($_POST['loginBtn'])){
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $sql =
+    "SELECT * FROM userr
+    WHERE email='$email'
+    AND password='$password'";
+
+    $result =
+    mysqli_query($conn,$sql);
+
+    if(mysqli_num_rows($result) > 0){
+
+        $user =
+        mysqli_fetch_assoc($result);
+
+        $_SESSION['user_id'] =
+        $user['user_id'];
+
+        $_SESSION['name'] =
+        $user['name'];
+
+        $_SESSION['role'] =
+        $user['role'];
+
+        if($user['role'] == 'admin'){
+
+            header(
+            "Location: adminDashboard.php"
+            );
+
+        }
+        else{
+
+            header(
+            "Location: homepage.php"
+            );
+
+        }
+
+        exit();
+
+    }
+    else{
+
+        echo "
+        <script>
         alert('Invalid Email or Password');
-        window.location.href='login.html';
-    </script>
-    ";
+        </script>
+        ";
+
+    }
+
 }
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="login-container">
+
+        <div class="login-banner">
+
+            <div class="banner-content">
+                <h1>Welcome to <br> UTeM ServaMart</h1>
+                <p>Buy,Sell,Service in one place</p>
+            </div>
+        </div>
+
+       <div class="login-form-section">
+
+    <h1 class="logo">
+        UTeM <br> ServaMart
+    </h1>
+
+    <h2>Welcome Back !</h2>
+
+    <p>
+        Don't have account ?
+        <a href="register.php">Create new now !</a>
+    </p>
+
+    <form class="login-form" id="login-formValidation" action="login.php"
+      method="POST">
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Your Email">
+            <small id="emailError" class="error"></small>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+
+            <div class="password-wrapper">
+                <input type="password" id="password" name="password" placeholder="Your Password" autocomplete="current-password">
+
+                 <img src="image/eye-slash-svgrepo-com.svg"
+                       id="togglePassword"
+                      alt="Show Password">
+            </div>
+            
+            
+            <small id="passwordError" class="error"></small>
+        </div>
+
+        <button type="submit" name="loginBtn" class="btn-primary">Login</button>
+
+    </form>
+
+    <p class="forgot-password">
+        Forgot Password ? <a href="#">Click Here</a>
+    </p>
+
+</div>
+
+<script src="loginValidation.js"></script>
+</body>
+</html>
