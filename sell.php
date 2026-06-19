@@ -57,7 +57,7 @@ VALUES
 else{
 
     $location = $_POST['location'];
-    $availableDate = $_POST['availableDate'];
+    $availability = $_POST['availability'];
 
     $sql = "
     INSERT INTO service_product
@@ -68,7 +68,7 @@ else{
         price,
         category,
         location,
-        available_date,
+        availability,
         image
     )
     VALUES
@@ -79,7 +79,7 @@ else{
         '$price',
         '$category',
         '$location',
-        '$availableDate',
+        '$availability',
         '$imageName'
     )
     ";
@@ -269,11 +269,33 @@ else{
 
         <div class="form-group">
 
-            <label>Available Date</label>
+            <label>Availability</label>
 
-            <input type="date" id="availableDate" name="availableDate">
+<select 
+id="availability"
+name="availability">
 
-            <small id="dateError" class="error"></small>
+<option value="">
+Select Availability
+</option>
+
+<option>
+Everyday
+</option>
+
+<option>
+Weekdays
+</option>
+
+<option>
+Weekend
+</option>
+
+<option>
+Monday - Friday
+</option>
+
+</select>
 
         </div>
 

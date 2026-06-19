@@ -1,3 +1,28 @@
+<?php
+
+session_start();
+include 'config.php';
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+
+$service_id = $_GET['id'];
+
+$query = mysqli_query(
+    $conn,
+    "SELECT service_product.*, userr.name AS seller_name
+     FROM service_product
+     JOIN userr
+     ON service_product.user_id = userr.user_id
+     WHERE service_id = '$service_id'"
+);
+
+$service = mysqli_fetch_assoc($query);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,7 +40,7 @@
     <link rel="stylesheet" href="spotlight.css">
     
 
-    <title>Product Detail </title>
+    <title>Service Detail </title>
 </head>
 
 <header>
@@ -59,42 +84,40 @@
 
     <div class="product-gallery">
 
-        <img src="image/product 3.jpg" class="main-image">
+        <img src="uploads/<?php echo $service['image']; ?>" class="main-image">
 
+        <!--
         <div class="thumbnail-container">
             <img src="image/product 3.jpg" class="thumbnail">
             <img src="image/product detail 1.webp" class="thumbnail">
             <img src="image/product detail 2.webp" class="thumbnail">
             <img src="image/product detail 3.webp" class="thumbnail">
-        </div>
+        </div> -->
 
     </div>
 
     <div class="product-info">
 
-        <h1>Desporte Futsal Shoes</h1>
+        <h1><?php echo $service['name']; ?></h1>
 
-        <p class="price">RM 300.00</p>
+        <p class="price">RM <?php echo number_format($service['price'],2); ?></p>
 
-        <p class="condition">Condition : Like New</p>
+        <p>Provider : <?php echo $service['seller_name']; ?></p>
 
-        <p class="seller">Seller : Ahmad</p>
+        <p>Availability : <?php echo $service['availability']; ?></p>
+
+        <p>Location : <?php echo $service['location']; ?></p>
 
         <div class="description">
             <h3>Description</h3>
 
-            <p>
-                Tessa Light ID3 is a high performance futsal shoe model that guarantees to elevate your game.
-                Kangaroo leather in the front part of the upper molds the shoe to your foot. 
-                Mesh parts on the sides provide ventilation and help the shoe maintain its form.
-                Synthetic suede leather lining in the upper, tongue and insole prevent your feet from slipping inside the shoe.
-            </p>
+            <p><?php echo nl2br($service['description']); ?></p>
         </div>
 
         <div class="action-button">
 
-        <a href="cart.html"><button class="cart-btn">
-            Add To Cart
+        <a href="bookingService.php"><button class="cart-btn">
+            Book Service
         </button></a>
 
         <button class="contact-btn">

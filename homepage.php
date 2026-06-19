@@ -183,13 +183,17 @@ usort($items, function($a, $b){
 
     <?php if($row['type'] == 'product'){ ?>
 
-        <button>View Details</button>
+<a href="product-detail.php?id=<?php echo $row['preloved_id']; ?>">
+    <button>View Details</button>
+</a>
 
-    <?php } else { ?>
+<?php } else { ?>
 
-        <button>Book Now</button>
+<a href="service-detail.php?id=<?php echo $row['service_id']; ?>">
+    <button>Book Now</button>
+</a>
 
-    <?php } ?>
+<?php } ?>
 
 </div>
 
