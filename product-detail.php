@@ -1,3 +1,28 @@
+<?php
+
+session_start();
+include 'config.php';
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+
+$preloved_id = $_GET['id'];
+
+$query = mysqli_query(
+    $conn,
+    "SELECT preloved_product.*, userr.name AS seller_name
+     FROM preloved_product
+     JOIN userr
+     ON preloved_product.user_id = userr.user_id
+     WHERE preloved_id = '$preloved_id'"
+);
+
+$product = mysqli_fetch_assoc($query);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,38 +84,40 @@
 
     <div class="product-gallery">
 
-        <img src="image/service 2.jpg" class="main-image">
+        <img src="uploads/<?php echo $product['image']; ?>" class="main-image">
 
+        <!--
         <div class="thumbnail-container">
-            <img src="image/service 2.jpg" class="thumbnail">
-            <img src="image/service detail 1.jpg" class="thumbnail">
-            <img src="image/service detail 2.jpg" class="thumbnail">
-        </div>
+            <img src="image/product 3.jpg" class="thumbnail">
+            <img src="image/product detail 1.webp" class="thumbnail">
+            <img src="image/product detail 2.webp" class="thumbnail">
+            <img src="image/product detail 3.webp" class="thumbnail">
+        </div> -->
 
     </div>
 
     <div class="product-info">
 
-        <h1>Laundry Service</h1>
+        <h1><?php echo $product['name']; ?></h1>
 
-        <p class="price">RM 15.00 / 8Kg </p>
+        <p class="price">RM <?php echo number_format($product['price'],2); ?></p>
 
-        <p>Provider : Ahmad</p>
+        <p class="condition">Condition : <?php echo $product['condition']; ?></p>
 
-        <p>Availability : Everyday</p>
-
-        <p>Location : UTeM Main Campus</p>
+        <p class="seller">Seller : <?php echo $product['seller_name']; ?></p>
 
         <div class="description">
             <h3>Description</h3>
 
-            <p>Spend your weekend living, not doing laundry. We wash, dry, and fold your clothes in under 24 hours so you can focus on what matters most.Fast, fresh, and straight to your door.</p>
+            <p>
+                <?php echo nl2br($product['description']); ?>
+            </p>
         </div>
 
         <div class="action-button">
 
-        <a href="bookingService.html"><button class="cart-btn">
-            Book Service
+        <a href="cart.html"><button class="cart-btn">
+            Add To Cart
         </button></a>
 
         <button class="contact-btn">
