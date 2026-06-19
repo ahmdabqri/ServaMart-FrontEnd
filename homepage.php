@@ -1,3 +1,12 @@
+<?php
+session_start();
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,24 +37,24 @@
     </div>
 
     <div class="nav-menu">
-        <button class="sell-button">SELL</button>
+        <a href="sell.html"><button class="sell-button">SELL</button></a>
 
-        <a href="#">
+        <a href="userProfile.php">
             <img src="image/profile-round-1342-svgrepo-com.svg">
             <span>Profile</span>
         </a>
 
-        <a href="#">
+        <a href="cart.php">
             <img src="image/cart-shopping-svgrepo-com.svg">
             <span>Cart</span>
         </a>
 
-        <a href="#">
+        <a href="chat.php">
             <img src="image/message-circle-chat-svgrepo-com.svg">
             <span>Message</span>
         </a>
 
-        <a href="#">
+        <a href="bookings.php">
             <img src="image/calendar-days-svgrepo-com.svg">
             <span>Booking</span>
         </a>
@@ -84,16 +93,19 @@
         <!--Category Section-->
         <section class="category-section">
 
+            <a href="PrelovedItemList.html" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/preloved.jpg"></div>
                 <h3>Preloved</h3>
-                
             </div>
+            </a>
 
+            <a href="ServiceList.html" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/service.jpg"></div>
                 <h3>Service</h3>
             </div>
+            </a>
 
         </section>
 

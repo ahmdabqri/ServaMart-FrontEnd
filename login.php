@@ -1,3 +1,68 @@
+<?php
+
+session_start();
+
+include 'config.php';
+
+if(isset($_POST['loginBtn'])){
+
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $sql =
+    "SELECT * FROM userr
+    WHERE email='$email'
+    AND password='$password'";
+
+    $result =
+    mysqli_query($conn,$sql);
+
+    if(mysqli_num_rows($result) > 0){
+
+        $user =
+        mysqli_fetch_assoc($result);
+
+        $_SESSION['user_id'] =
+        $user['user_id'];
+
+        $_SESSION['name'] =
+        $user['name'];
+
+        $_SESSION['role'] =
+        $user['role'];
+
+        if($user['role'] == 'admin'){
+
+            header(
+            "Location: adminDashboard.php"
+            );
+
+        }
+        else{
+
+            header(
+            "Location: homepage.php"
+            );
+
+        }
+
+        exit();
+
+    }
+    else{
+
+        echo "
+        <script>
+        alert('Invalid Email or Password');
+        </script>
+        ";
+
+    }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,14 +96,15 @@
 
     <p>
         Don't have account ?
-        <a href="register.html">Create new now !</a>
+        <a href="register.php">Create new now !</a>
     </p>
 
-    <form class="login-form" id="login-formValidation">
+    <form class="login-form" id="login-formValidation" action="login.php"
+      method="POST">
 
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="Your Email">
+            <input type="email" id="email" name="email" placeholder="Your Email">
             <small id="emailError" class="error"></small>
         </div>
 
@@ -46,7 +112,7 @@
             <label for="password">Password</label>
 
             <div class="password-wrapper">
-                <input type="password" id="password" placeholder="Your Password" autocomplete="current-password">
+                <input type="password" id="password" name="password" placeholder="Your Password" autocomplete="current-password">
 
                  <img src="image/eye-slash-svgrepo-com.svg"
                        id="togglePassword"
@@ -57,7 +123,7 @@
             <small id="passwordError" class="error"></small>
         </div>
 
-        <button type="submit" class="btn-primary">Login</button>
+        <button type="submit" name="loginBtn" class="btn-primary">Login</button>
 
     </form>
 

@@ -63,9 +63,9 @@
                 <label for="sort">Sort By :</label>
                 
                 <select id="sort">
-                    <option>Latest</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
+                    <option value="latest">Latest</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
                     <option>Category</option>
                     <option>Rating</option>
                 </select>
@@ -76,85 +76,85 @@
         <!--Product Grid-->
         <section class="product-section">
             
-        <div class="product-grid">
+        <div class="product-grid" id="product-grid">
 
              <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 1.jpg">
                 </div>
 
-                <h3>Gaming Mouse</h3>
-                <p>RM 50.00</p>
+                <h3>Tutor Programming</h3>
+                <p class="price" data-price="50">RM 50.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 2.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Laundry</h3>
+                <p class="price" data-price="15">RM 15.00</p>
+                <a href="service-detail.html"><button>View Details</button></a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/service 3.jpg">
+                </div>
+
+                <h3>Personal Shopper</h3>
+                <p class="price" data-price="10">RM 10.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 4.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Phone Repair Service</h3>
+                <p class="price" data-price="30">RM 30.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 5.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Pickup Parcel Service</h3>
+                <p class="price" data-price="3">RM 3.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 6.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Iron Clothes Service</h3>
+                <p class="price" data-price="5">RM 5.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 7.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>MUET Workshop Class</h3>
+                <p class="price" data-price="30">RM 30.00</p>
                 <button>Book Now</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Service
+                    <img src="image/service 8.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>Book Now</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    Service
-                </div>
-
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Motorcycle Wash</h3>
+                <p class="price" data-price="25">RM 25.00</p>
                 <button>Book Now</button>
             </div>
 
@@ -164,7 +164,7 @@
     </section>
 
     </div>
-      
+      <script src="SortList.js"></script>
 </body>
 
 <footer class="footer">

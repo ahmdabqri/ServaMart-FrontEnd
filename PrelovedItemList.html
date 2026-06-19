@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="spotlight.css">
     <link rel="stylesheet" href="PrelovedItemList.css">
 
-    <title>Home Page ServaMart</title>
+    <title>Preloved List Page ServaMart</title>
 </head>
 
 <header>
@@ -63,9 +63,9 @@
                 <label for="sort">Sort By :</label>
                 
                 <select id="sort">
-                    <option>Latest</option>
-                    <option>Price: Low to High</option>
-                    <option>Price: High to Low</option>
+                    <option value="latest">Latest</option>
+                    <option value="low-high">Price: Low to High</option>
+                    <option value="high-low">Price: High to Low</option>
                     <option>Condition</option>
                     <option>Rating</option>
                 </select>
@@ -76,85 +76,85 @@
         <!--Product Grid-->
         <section class="product-section">
             
-        <div class="product-grid">
+        <div class="product-grid" id="product-grid">
 
              <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 1.jpg">
                 </div>
 
                 <h3>Gaming Mouse</h3>
-                <p>RM 50.00</p>
+                <p class="price" data-price="50">RM 50.00</p>
                 <button>View Details</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 2.jpg">
                 </div>
 
                 <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <p class="price" data-price="80">RM 80.00</p>
+                <button>View Details</button>
+            </div>
+
+           <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 3.jpg">
+                </div>
+
+                <h3>Desporte Futsal Shoes</h3>
+                <p class="price" data-price="300">RM 300.00</p>
+                <a href="product-detail.html"><button>View Details</button></a>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 4.jpg">
+                </div>
+
+                <h3>Wallet</h3>
+                <p class="price" data-price="50">RM 50.00</p>
                 <button>View Details</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 5.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Earpod</h3>
+                <p class="price" data-price="120">RM 120.00</p>
                 <button>View Details</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 6.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Powerbank</h3>
+                <p class="price" data-price="70">RM 70.00</p>
                 <button>View Details</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 7.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Aesthetic Carpet</h3>
+                <p class="price" data-price="35">RM 35.00</p>
                 <button>View Details</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image">
-                    Product
+                    <img src="image/product 8.jpg">
                 </div>
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>View Details</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    Product
-                </div>
-
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>View Details</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image">
-                    Product
-                </div>
-
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
+                <h3>Data Structure Book</h3>
+                <p class="price" data-price="25">RM 25.00</p>
                 <button>View Details</button>
             </div>
 
@@ -164,7 +164,8 @@
     </section>
 
     </div>
-      
+
+    <script src="SortList.js"></script>
 </body>
 
 <footer class="footer">
