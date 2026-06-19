@@ -10,6 +10,16 @@ if($_SESSION['role'] != 'admin'){
 
 }
 
+include 'config.php';
+
+$paymentQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM order_table
+     WHERE payment_status = 'Pending Verification'
+     ORDER BY order_date DESC"
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -276,77 +286,84 @@ if($_SESSION['role'] != 'admin'){
 
 </div>
 
-<div id="paymentContent"
-     class="admin-content">
+<div id="paymentContent" class="admin-content">
 
     <h3>Manage Payments</h3>
 
-    <input type="text"
-           placeholder="Search Payment">
+    <input type="text" placeholder="Search Payment">
 
     <table class="admin-table">
 
-        <tr>
-            <th>Payment ID</th>
-            <th>Customer</th>
-            <th>Amount</th>
-            <th>Method</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
+<tr>
+    <th>Order ID</th>
+    <th>Customer</th>
+    <th>Amount</th>
+    <th>Proof</th>
+    <th>Status</th>
+    <th>Action</th>
+</tr>
 
-        <tr>
-            <td>PAY001</td>
-            <td>Ahmad</td>
-            <td>RM300.00</td>
-            <td>Online Banking</td>
-            <td>
-                <span class="payment-status paid">
-                    Paid
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+<?php
+while($payment = mysqli_fetch_assoc($paymentQuery)){
+?>
 
-        <tr>
-            <td>PAY002</td>
-            <td>Ali</td>
-            <td>RM50.00</td>
-            <td>E-Wallet</td>
-            <td>
-                <span class="payment-status pending-payment">
-                    Pending
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+<tr>
 
-        <tr>
-            <td>PAY003</td>
-            <td>Siti</td>
-            <td>RM120.00</td>
-            <td>Credit Card</td>
-            <td>
-                <span class="payment-status failed">
-                    Failed
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+    <td>
+        #<?php echo $payment['order_id']; ?>
+    </td>
 
-    </table>
+    <td>
+        <?php echo $payment['full_name']; ?>
+    </td>
+
+    <td>
+        RM <?php echo number_format($payment['total_amount'],2); ?>
+    </td>
+
+    <td>
+
+        <a
+        href="uploads/payment/<?php echo $payment['payment_proof']; ?>"
+        target="_blank">
+
+        View Receipt
+
+        </a>
+
+    </td>
+
+    <td>
+        <?php echo $payment['payment_status']; ?>
+    </td>
+
+    <td>
+
+    <a href="approvePayment.php?id=<?php echo $payment['order_id']; ?>" class="approve-link">
+
+        <button class="approve-btn">
+            Approve
+        </button>
+
+    </a>
+
+    <a href="rejectPayment.php?id=<?php echo $payment['order_id']; ?>" class="reject-link">
+
+        <button class="reject-btn">
+            Reject
+        </button>
+
+    </a>
+
+</td>
+
+</tr>
+
+<?php
+}
+?>
+
+</table>
 
 </div>
 
@@ -410,16 +427,4 @@ if($_SESSION['role'] != 'admin'){
 </div>
 <script src="adminDashboard.js"></script>
 </body>
-
-<footer class="footer">
-    <div class="footer-left">
-        <p>&#169 2026 UTeM ServaMart </p>
-    </div>
-    <div class="footer-right">
-        <a href="#">Help Centre</a>
-        <span>|</span>
-        <a href="#">Contact Us</a>
-    </div>
-    
-</footer>
 </html>

@@ -3,7 +3,6 @@ document.getElementById("checkOut-formValidation");
 
 checkoutForm.addEventListener("submit", function(event){
 
-    event.preventDefault();
 
     const fullName =
     document.getElementById("fullName").value.trim();
@@ -91,11 +90,8 @@ checkoutForm.addEventListener("submit", function(event){
         isValid = false;
     }
 
-    if(isValid){
-
-        alert("Order placed successfully!");
-        window.location.href = "orderSuccess.html";
-
-    }
+if(isValid){
+    checkoutForm.submit();
+}
 
 });

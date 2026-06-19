@@ -27,3 +27,32 @@ tabs.forEach(tab => {
     });
 
 });
+
+
+document.querySelectorAll(".approve-btn").forEach(link => {
+
+    link.addEventListener("click", function(e){
+
+        if(!confirm("Approve this payment?")){
+
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+document.querySelectorAll(".reject-btn").forEach(link => {
+
+    link.addEventListener("click", function(e){
+
+        if(!confirm("Reject this payment?")){
+
+            e.preventDefault();
+
+        }
+
+    });
+
+});

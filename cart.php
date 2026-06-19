@@ -1,10 +1,26 @@
 <?php
+
 session_start();
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit();
 }
+
+include 'config.php';
+
+$user_id = $_SESSION['user_id'];
+
+$query = mysqli_query(
+    $conn,
+    "SELECT cart.*,
+            preloved_product.*
+     FROM cart
+     JOIN preloved_product
+     ON cart.preloved_id = preloved_product.preloved_id
+     WHERE cart.user_id = '$user_id'"
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -66,95 +82,54 @@ if(!isset($_SESSION['user_id'])){
 
     <h1>Shopping Cart</h1>
 
-    <div class="cart-content">
+    <form action="checkOut.php" method="POST">
 
-        <div class="cart-items">
+        <div class="cart-content">
 
-            <!--Item 1-->
+            <div class="cart-items">
+
+                <?php while($row = mysqli_fetch_assoc($query)){ ?>
 
             <div class="cart-item">
 
-                <input type="checkbox"
-                        class="item-checkbox"
-                        data-price="300">
+            <input
+                type="checkbox"
+                name="selected_items[]"
+                value="<?php echo $row['cart_id']; ?>"
+                class="item-checkbox"
+                data-price="<?php echo $row['price']; ?>">
 
-                <img src="image/product 3.jpg" alt="Desporte Futsal Shoes">
+                <img src="uploads/<?php echo $row['image']; ?>">
 
-                <div class="item-details">
+            <div class="item-details">
 
-                    <h3>Desporte Futsal Shoes</h3>
+                <h3><?php echo $row['name']; ?></h3>
 
-                    <p class="price">RM 300.00</p>
+                <p>RM <?php echo number_format($row['price'],2); ?></p>
 
-                    <div class="quantity">
-
-                        <button class="minus-btn">-</button>
-
-                        <span class="qty">1</span>
-
-                        <button class="plus-btn">+</button>
-
-                    </div>
-
-                    <button class="remove-btn">
-                        Remove
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- Item 2 -->
-            <div class="cart-item">
-
-                <input type="checkbox"
-                       class="item-checkbox"
-                       data-price="50">
-
-                <img src="image/product 1.jpg"
-                     alt="Gaming Mouse">
-
-                <div class="item-details">
-
-                    <h3>Gaming Mouse</h3>
-
-                    <p class="price">RM 50.00</p>
-
-                    <div class="quantity">
-
-                        <button class="minus-btn">-</button>
-
-                        <span class="qty">1</span>
-
-                        <button class="plus-btn">+</button>
-
-                    </div>
-
-                    <button class="remove-btn">
-                        Remove
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-            
-
-        <div class="cart-summary">
-
-            <h2>Order Summary</h2>
-
-             <p>Total: RM <span id="totalPrice">0.00</span></p>
-
-            <a href="checkOut.html"><button class="checkout-btn">
-                Checkout
-            </button></a>
-
-        </div>
+                <button type="button" class="remove-btn" onclick="window.location.href='remove-cart.php?id=<?php echo $row['cart_id']; ?>'">Remove</button>
 
     </div>
+
+</div>
+
+<?php } ?>
+
+</div>
+
+<div class="cart-summary">
+
+    <h2>Order Summary</h2>
+
+    <p>Total: RM <span id="totalPrice">0.00</span></p>
+
+    <button type="submit" class="checkout-btn">
+        Checkout
+    </button>
+
+</div>
+
+</form>
 
 </section>
 

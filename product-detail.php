@@ -116,7 +116,7 @@ $product = mysqli_fetch_assoc($query);
 
         <div class="action-button">
 
-        <a href="cart.html"><button class="cart-btn">
+        <a href="add-cart.php?id=<?php echo $product['preloved_id']; ?>"><button class="cart-btn">
             Add To Cart
         </button></a>
 
