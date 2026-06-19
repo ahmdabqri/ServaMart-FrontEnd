@@ -1,22 +1,55 @@
-<?php
-session_start();
-include 'config.php';
+    <?php
+    session_start();
+    include 'config.php';
 
-if(!isset($_SESSION['user_id'])){
-    header("Location: login.php");
-    exit();
-}
+    if(!isset($_SESSION['user_id'])){
+        header("Location: login.php");
+        exit();
+    }
 
-$user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 
-$sql = "SELECT * FROM userr
-        WHERE user_id = '$user_id'";
+    $sql = "SELECT * FROM userr
+            WHERE user_id = '$user_id'";
 
-$result = mysqli_query($conn,$sql);
+    $result = mysqli_query($conn,$sql);
 
-$user = mysqli_fetch_assoc($result);
+    $user = mysqli_fetch_assoc($result);
 
-?>
+    $purchaseQuery = mysqli_query(
+        $conn,
+        "SELECT *
+        FROM order_table
+        WHERE user_id = '$user_id'
+        ORDER BY order_date DESC"
+    );
+
+    $listingQuery = mysqli_query(
+        $conn,
+        "SELECT *
+        FROM preloved_product
+        WHERE user_id = '$user_id'"
+    );
+
+    $sellerOrderQuery = mysqli_query(
+    $conn,
+    "SELECT
+        order_table.order_id,
+        order_table.payment_status,
+        order_table.full_name,
+        preloved_product.name,
+        preloved_product.price,
+        preloved_product.image
+     FROM order_table
+     JOIN order_item
+        ON order_table.order_id = order_item.order_id
+     JOIN preloved_product
+        ON order_item.preloved_id = preloved_product.preloved_id
+     WHERE preloved_product.user_id = '$user_id'
+     AND order_table.payment_status = 'In Progress'"
+);
+
+    ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -35,6 +68,7 @@ $user = mysqli_fetch_assoc($result);
     <link rel="stylesheet" href="userProfile(reviews).css">
     <link rel="stylesheet" href="userProfile(purchases).css">
     <link rel="stylesheet" href="userProfile(bookings).css">
+    <link rel="stylesheet" href="userProfile(payment).css">
 
 
     
@@ -136,30 +170,96 @@ $user = mysqli_fetch_assoc($result);
             Bookings
         </button>
 
+        <button id="paymentTab" class="tab-btn">
+            Payment Info
+        </button>
+
     </div>
 
    <div class="profile-content">
 
-    <div id="listingsContent"
-         class="tab-content active-content">
+    <div id="listingsContent" class="tab-content active-content">
 
         <h2>My Listings</h2>
 
         <div class="listing-grid">
 
-            <div class="listing-card">
-                Product 1
-            </div>
+            <?php
+            while($product = mysqli_fetch_assoc($listingQuery)){
+            ?>
 
-            <div class="listing-card">
-                Product 2
-            </div>
+                <div class="listing-card">
 
-            <div class="listing-card">
-                Product 3
-            </div>
+                    <img
+                        src="uploads/<?php echo $product['image']; ?>"
+                        alt="Product">
+
+                    <div class="listing-info">
+
+                        <h3><?php echo $product['name']; ?></h3>
+
+                        <p>
+                            RM <?php echo number_format($product['price'],2); ?>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            <?php
+            }
+            ?>
 
         </div>
+
+        <br><br>
+        <h2>Orders To Complete</h2>
+
+<div class="listing-grid">
+
+<?php
+while($order = mysqli_fetch_assoc($sellerOrderQuery)){
+?>
+
+<div class="listing-card">
+
+    <img
+        src="uploads/<?php echo $order['image']; ?>"
+        alt="Product">
+
+    <div class="listing-info">
+
+        <h3>
+            <?php echo $order['name']; ?>
+        </h3>
+
+        <p>
+            Buyer:
+            <?php echo $order['full_name']; ?>
+        </p>
+
+        <p>
+            Status:
+            <?php echo $order['payment_status']; ?>
+        </p>
+
+        <a href="completeOrder.php?id=<?php echo $order['order_id']; ?>">
+
+            <button class="complete-btn">
+                Mark As Completed
+            </button>
+
+        </a>
+
+    </div>
+
+</div>
+
+<?php
+}
+?>
+
+</div>
 
     </div>
 
@@ -271,69 +371,77 @@ $user = mysqli_fetch_assoc($result);
         <h2>Purchases</h2>
          <div class="purchase-status">
 
-        <button class="purchase-btn active-purchase" data-status="all">
-            All
-        </button>
+         <button class="purchase-btn active-purchase" data-status="all">
+    All
+</button>
 
-        <button class="purchase-btn" data-status="topay">
-            To Pay
-        </button>
+        <button class="purchase-btn" data-status="pending-verification">
+    Pending Verification
+</button>
 
-        <button class="purchase-btn" data-status="progress">
-            In Progress
-        </button>
+<button class="purchase-btn" data-status="in-progress">
+    In Progress
+</button>
 
-        <button class="purchase-btn" data-status="completed">
-            Completed
-        </button>
+<button class="purchase-btn" data-status="completed">
+    Completed
+</button>
 
-        <button class="purchase-btn" data-status="cancelled">
-            Cancelled
-        </button>
+<button class="purchase-btn" data-status="cancelled">
+    Cancelled
+</button>
 
     </div>
 
     <div class="purchase-list">
 
-        <div class="purchase-card" data-status="completed">
+<?php
 
-            <img src="image/product 3.jpg"
-                 alt="Product">
+if(mysqli_num_rows($purchaseQuery) > 0){
 
-            <div class="purchase-info">
+    while($order = mysqli_fetch_assoc($purchaseQuery)){
 
-                <h3>Desporte Futsal Shoes</h3>
+?>
 
-                <p>RM300.00</p>
+<div
+    class="purchase-card"
+    data-status="<?php echo strtolower(str_replace(' ','-',$order['payment_status'])); ?>">
 
-                <span class="status completed">
-                    Completed
-                </span>
+    <div class="purchase-info">
 
-            </div>
+        <h3>
+            Order #<?php echo $order['order_id']; ?>
+        </h3>
 
-        </div>
+        <p>
+            RM <?php echo number_format($order['total_amount'],2); ?>
+        </p>
 
-        <div class="purchase-card" data-status="progress">
+        <p>
+            <?php echo $order['order_date']; ?>
+        </p>
 
-            <img src="image/product 4.jpg"
-                 alt="Product">
-
-            <div class="purchase-info">
-
-                <h3>Gaming Mouse</h3>
-
-                <p>RM50.00</p>
-
-                <span class="status progress">
-                    In Progress
-                </span>
-
-            </div>
-
-        </div>
+        <span class="status">
+            <?php echo $order['payment_status']; ?>
+        </span>
 
     </div>
+
+</div>
+
+<?php
+
+    }
+
+}else{
+
+    echo "<p>No purchases yet.</p>";
+
+}
+
+?>
+
+</div>
     </div>
 
     <div id="bookingsContent" class="tab-content">
@@ -405,6 +513,64 @@ $user = mysqli_fetch_assoc($result);
 
     </div>
 
+    <div id="paymentContent" class="tab-content">
+
+    <h2>Payment Information</h2>
+
+    <form action="update-payment.php" method="POST" enctype="multipart/form-data">
+
+        <div class="form-group">
+
+            <label>Bank Name</label>
+
+            <input
+                type="text"
+                name="bankName"
+                value="<?php echo $user['bank_name'] ?? ''; ?>">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Account Number</label>
+
+            <input
+                type="text"
+                name="bankAccount"
+                value="<?php echo $user['bank_account'] ?? ''; ?>">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Payment QR</label>
+
+            <input
+                type="file"
+                name="paymentQR"
+                accept="image/*">
+
+        </div>
+
+        <?php
+        if(!empty($user['payment_qr'])){
+        ?>
+
+        <img
+            src="uploads/payment/<?php echo $user['payment_qr']; ?>"
+            width="200">
+
+        <?php
+        }
+        ?>
+
+        <button type="submit">
+            Save Payment Info
+        </button>
+
+    </form>
+
+</div>
 </div>
 
 </section>

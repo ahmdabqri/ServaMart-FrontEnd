@@ -249,6 +249,51 @@
     color:black;
 }
 
-.footer{
-    margin-top:40px;
+.approve-btn{
+    background:#22c55e;
+    color:white;
+
+    border:none;
+    border-radius:8px;
+
+    padding:8px 15px;
+
+    cursor:pointer;
+
+    font-weight:500;
+
+    transition:0.3s;
+}
+
+.approve-btn:hover{
+    background:#16a34a;
+    transform:translateY(-2px);
+}
+
+.reject-btn{
+    background:#ef4444;
+    color:white;
+
+    border:none;
+    border-radius:8px;
+
+    padding:8px 15px;
+
+    cursor:pointer;
+
+    font-weight:500;
+
+    transition:0.3s;
+
+    margin-left:5px;
+}
+
+.reject-btn:hover{
+    background:#dc2626;
+    transform:translateY(-2px);
+}
+
+td:last-child{
+    display:flex;
+    gap:8px;
 }
