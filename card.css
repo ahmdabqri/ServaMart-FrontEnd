@@ -14,7 +14,7 @@
 }
 
 .product-card{
-    width: 250px;
+    width: 100%;
     background: white;
     border-radius: 15px;
     padding: 15px;
@@ -56,12 +56,12 @@
     cursor: pointer;
 }
 
-.product-grid {
+.product-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:24px;
+    grid-template-columns:
+    repeat(auto-fill,minmax(250px,1fr));
 
-    padding:20px 40px;
+    gap:30px;
 }
 
 .no-result{
@@ -71,4 +71,8 @@
     font-size:20px;
     font-weight:600;
     margin-top:30px;
+}
+
+.product-section{
+    width:100%;
 }

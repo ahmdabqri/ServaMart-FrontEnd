@@ -1,10 +1,21 @@
 <?php
 session_start();
+include 'config.php';
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit();
 }
+
+$user_id = $_SESSION['user_id'];
+
+$sql = "SELECT * FROM userr
+        WHERE user_id = '$user_id'";
+
+$result = mysqli_query($conn,$sql);
+
+$user = mysqli_fetch_assoc($result);
+
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +56,7 @@ if(!isset($_SESSION['user_id'])){
 
         <a href="#">
             <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
+            <span><?php echo $_SESSION['name']; ?></span>
         </a>
 
         <a href="cart.html">
@@ -82,11 +93,11 @@ if(!isset($_SESSION['user_id'])){
 
         <div class="profile-info">
 
-            <h2>Abqari</h2>
+            <h2><?php echo $user['name']; ?></h2>
 
-            <p>d032410278@student.utem.edu.my</p>
+            <p><?php echo $user['email']; ?></p>
 
-            <p>012-3456789</p>
+            <p>UTeM ServaMart Member</p>
 
             <div class="profile-stats">
 

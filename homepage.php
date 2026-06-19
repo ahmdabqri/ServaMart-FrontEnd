@@ -1,10 +1,52 @@
 <?php
 session_start();
+include 'config.php';
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
     exit();
 }
+?>
+
+<?php
+
+$items = [];
+
+/* PRELOVED */
+$productQuery = mysqli_query(
+    $conn,
+    "SELECT * FROM preloved_product
+    WHERE status='Available'
+    ORDER BY created_at DESC"
+);
+
+while($row = mysqli_fetch_assoc($productQuery)){
+
+    $row['type'] = 'product';
+
+    $items[] = $row;
+}
+
+/* SERVICE */
+$serviceQuery = mysqli_query(
+    $conn,
+    "SELECT * FROM service_product
+WHERE status='Available'
+ORDER BY created_at DESC"
+);
+
+while($row = mysqli_fetch_assoc($serviceQuery)){
+
+    $row['type'] = 'service';
+
+    $items[] = $row;
+}
+
+usort($items, function($a, $b){
+    return strtotime($b['created_at'])
+         - strtotime($a['created_at']);
+});
+
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +79,7 @@ if(!isset($_SESSION['user_id'])){
     </div>
 
     <div class="nav-menu">
-        <a href="sell.html"><button class="sell-button">SELL</button></a>
+        <a href="sell.php"><button class="sell-button">SELL</button></a>
 
         <a href="userProfile.php">
             <img src="image/profile-round-1342-svgrepo-com.svg">
@@ -112,92 +154,46 @@ if(!isset($_SESSION['user_id'])){
         <!--Product Grid-->
         <section class="product-section">
 
-            
-            
         <div class="product-grid">
             <p id="noResult" class="no-result">
                 No product found
             </p>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 1.jpg">
-                </div>
+            <?php foreach($items as $row){ ?>
 
-                <h3>Gaming Mouse</h3>
-                <p>RM 50.00</p>
-                <button>View Details</button>
-            </div>
+<div class="product-card">
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 1.jpg">
-                </div>
+    <div class="product-image">
 
-                <h3>Tutor Programming</h3>
-                <p>RM 50.00</p>
-                <button>Book Now</button>
-            </div>
+        <?php if($row['type'] == 'product'){ ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 2.jpg">
-                </div>
+            <img src="uploads/<?php echo $row['image']; ?>">
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>View Details</button>
-            </div>
+        <?php } else { ?>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 2.jpg">
-                </div>
+            <img src="uploads/<?php echo $row['image']; ?>">
 
-                <h3>Laundry</h3>
-                <p>RM 15.00</p>
-                <button>Book Now</button>
-            </div>
+        <?php } ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 3.jpg">
-                </div>
+    </div>
 
-                <h3>Desporte Futsal Shoes</h3>
-                <p>RM 300.00</p>
-                <button>View Details</button>
-            </div>
+    <h3><?php echo $row['name']; ?></h3>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 3.jpg">
-                </div>
+    <p>RM <?php echo $row['price']; ?></p>
 
-                <h3>Personal Shopper</h3>
-                <p>RM 10.00</p>
-                <button>Book Now</button>
-            </div>
+    <?php if($row['type'] == 'product'){ ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 4.jpg">
-                </div>
+        <button>View Details</button>
 
-                <h3>Wallet</h3>
-                <p>RM 50.00</p>
-                <button>View Details</button>
-            </div>
+    <?php } else { ?>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 4.jpg">
-                </div>
+        <button>Book Now</button>
 
-                <h3>Phone Repair</h3>
-                <p>RM 50.00</p>
-                <button>Book Now</button>
-            </div>
+    <?php } ?>
+
+</div>
+
+<?php } ?>
 
         </div>
 
