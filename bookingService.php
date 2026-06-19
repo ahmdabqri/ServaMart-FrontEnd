@@ -1,3 +1,41 @@
+<?php
+
+session_start();
+include 'config.php';
+
+$service_id = $_GET['id'];
+
+$serviceQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM service_product
+     WHERE service_id = '$service_id'"
+);
+
+$service = mysqli_fetch_assoc($serviceQuery);
+
+$userQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM userr
+     WHERE user_id = '".$service['user_id']."'"
+);
+
+$provider = mysqli_fetch_assoc($userQuery);
+
+$slots = [
+    "9.00 AM",
+    "10.00 AM",
+    "11.00 AM",
+    "12.00 PM",
+    "1.00 PM",
+    "2.00 PM",
+    "3.00 PM",
+    "4.00 PM"
+];
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,7 +51,7 @@
     <link rel="stylesheet" href="bookingService.css">
     
 
-    <title>My Bookings Page ServaMart</title>
+    <title> Bookings Page ServaMart</title>
 </head>
 
 <header>
@@ -63,25 +101,30 @@
 
         <div class="service-summary">
 
-            <img src="image/service 2.jpg " alt="Laundry" class="service-image">
+            <img src="uploads/<?php echo $service['image']; ?>"class="service-image">
 
             <div class="service-info">
-            <h3>Laundry Service</h3>
+                
+            <h3><?php echo $service['name']; ?></h3>
 
             <div class="service-rating">⭐ 4.8 (25 Reviews)</div>
 
-            <p><strong>Provider :</strong> Ahmad</p>
+            <p><strong>Provider :</strong> <?php echo $provider['name']; ?></p>
             
-            <p><strong>Location :</strong> UTeM Main Campus</p>
+            <p><strong>Location :</strong> <?php echo $service['location']; ?></p>
 
-            <p class="service-price">RM15.00 / 8kg</p>
+            <p class="service-price">RM <?php echo number_format($service['price'],2); ?></p>
+
             </div>
 
         </div>
 
+        <form action="processBooking.php" method="POST">
+
         <div class="form-group">
             <label>Select Date</label>
-            <input type="date" id="bookingDate">
+            <input type="date" name="booking_date" required>
+            <input type="hidden" name="booking_time" id="bookingTime">
             <small id="dateError" class="error"></small>
         </div>
 
@@ -90,27 +133,23 @@
 
             <div class="slot-grid">
 
-                
+               
 
-                <button class="slot-btn">9.00 AM</button>
+                <button type="button" class="slot-btn">9.00 AM</button>
 
-                <button class="slot-btn unavailable">
-                    10.00 AM
-                </button>
+                <button type="button" class="slot-btn">10.00 AM</button>
 
-                <button class="slot-btn">11.00 AM</button>
+                <button type="button" class="slot-btn">11.00 AM</button>
 
-                <button class="slot-btn">12.00 PM</button>
+                <button type="button" class="slot-btn">12.00 PM</button>
 
-                <button class="slot-btn unavailable">
-                    1.00 PM
-                </button>
+                <button type="button" class="slot-btn">1.00 PM</button>
 
-                <button class="slot-btn">2.00 PM</button>
+                <button type="button" class="slot-btn">2.00 PM</button>
 
-                <button class="slot-btn">3.00 PM</button>
+                <button type="button" class="slot-btn">3.00 PM</button>
 
-                <button class="slot-btn">4.00 PM</button>
+                <button type="button" class="slot-btn">4.00 PM</button>
 
             </div>
 
@@ -120,12 +159,12 @@
 
         </div>
 
-        <button id="bookBtn"
-                class="book-btn">
+        <input type="hidden" name="service_id" value="<?php echo $service['service_id']; ?>">
+        <input type="hidden" name="provider_id" value="<?php echo $service['user_id']; ?>">
 
-            Book Service
+        <button type="submit" id="bookBtn" class="book-btn"> Book Service </button>
 
-        </button>
+        </form>
 
     </div>
 
