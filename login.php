@@ -128,7 +128,7 @@ if(isset($_POST['loginBtn'])){
     </form>
 
     <p class="forgot-password">
-        Forgot Password ? <a href="#">Click Here</a>
+        Forgot Password ? <a href="forgotPassword.php">Click Here</a>
     </p>
 
 </div>
