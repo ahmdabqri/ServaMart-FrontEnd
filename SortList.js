@@ -41,6 +41,17 @@ sortSelect.addEventListener("change", function () {
 
     }
 
+    else if (this.value === "latest") {
+ 
+        cards.sort((a, b) => {
+ 
+            const idA = parseInt(a.dataset.id, 10);
+            const idB = parseInt(b.dataset.id, 10);
+ 
+            return idB - idA;
+        });
+    }
+
     cards.forEach(card => productGrid.appendChild(card));
 
 });

@@ -10,6 +10,27 @@ if(!isset($_SESSION['user_id'])){
 
 <?php
 
+/* Handle sort selection (defaults to latest) */
+$sort = isset($_GET['sort']) ? $_GET['sort'] : 'latest';
+
+switch($sort){
+    case 'low-high':
+        $orderBy = "price ASC";
+        break;
+    case 'high-low':
+        $orderBy = "price DESC";
+        break;
+    case 'condition':
+        $orderBy = "item_condition ASC";
+        break;
+    case 'rating':
+        $orderBy = "rating DESC";
+        break;
+    default:
+        $orderBy = "created_at DESC";
+        break;
+}
+
 $items = [];
 
 /* PRELOVED FROM DATABASE */
@@ -17,7 +38,7 @@ $productQuery = mysqli_query(
     $conn,
     "SELECT * FROM preloved_product
     WHERE status='Available'
-    ORDER BY created_at DESC"
+    ORDER BY $orderBy"
 );
 
 while($row = mysqli_fetch_assoc($productQuery)){
@@ -91,11 +112,12 @@ while($row = mysqli_fetch_assoc($productQuery)){
             <div class="sort-section">
                 <label for="sort">Sort By :</label>
 
-                <select id="sort">
-                    <option value="latest">Latest</option>
-                    <option value="low-high">Price: Low to High</option>
-                    <option value="high-low">Price: High to Low</option>
-                    <option value="condition">Condition</option>
+                <select id="sort" onchange="location.href='PrelovedItemList.php?sort=' + this.value">
+                    <option value="latest" <?php echo ($sort=='latest')?'selected':''; ?>>Latest</option>
+                    <option value="low-high" <?php echo ($sort=='low-high')?'selected':''; ?>>Price: Low to High</option>
+                    <option value="high-low" <?php echo ($sort=='high-low')?'selected':''; ?>>Price: High to Low</option>
+                    <option value="condition" <?php echo ($sort=='condition')?'selected':''; ?>>Condition</option>
+                    <option value="rating" <?php echo ($sort=='rating')?'selected':''; ?>>Rating</option>
                 </select>
 
             </div>
@@ -114,7 +136,7 @@ while($row = mysqli_fetch_assoc($productQuery)){
 
             <?php foreach($items as $row){ ?>
 
-            <div class="product-card" data-id="<?php echo $row['preloved_id']; ?>">
+            <div class="product-card">
                 <div class="product-image">
                     <img src="uploads/<?php echo $row['image']; ?>">
                 </div>
@@ -127,12 +149,67 @@ while($row = mysqli_fetch_assoc($productQuery)){
                 </a>
             </div>
 
-            <?php }} ?>
+            <?php } ?>
 
             <!-- STATIC PRODUCTS (DUMMY) -->
 
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 2.jpg">
+                </div>
+                <h3>Mechanical Keyboard</h3>
+                <p class="price" data-price="80">RM 80.00</p>
+                <button>View Details</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 4.jpg">
+                </div>
+                <h3>Wallet</h3>
+                <p class="price" data-price="50">RM 50.00</p>
+                <button>View Details</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 5.jpg">
+                </div>
+                <h3>Earpod</h3>
+                <p class="price" data-price="120">RM 120.00</p>
+                <button>View Details</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 6.jpg">
+                </div>
+                <h3>Powerbank</h3>
+                <p class="price" data-price="70">RM 70.00</p>
+                <button>View Details</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 7.jpg">
+                </div>
+                <h3>Aesthetic Carpet</h3>
+                <p class="price" data-price="35">RM 35.00</p>
+                <button>View Details</button>
+            </div>
+
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="image/product 8.jpg">
+                </div>
+                <h3>Data Structure Book</h3>
+                <p class="price" data-price="25">RM 25.00</p>
+                <button>View Details</button>
+            </div>
+
+            <?php } ?>
+
         </div>
-        
 
     </section>
 
