@@ -131,6 +131,69 @@ WHERE review.service_id IN (
 ORDER BY review.review_date DESC"
 );
 
+$listingCountQuery = mysqli_query(
+    $conn,
+    "SELECT COUNT(*) AS total
+     FROM service_product
+     WHERE user_id = '$user_id'"
+);
+
+$listingData = mysqli_fetch_assoc($listingCountQuery);
+
+$totalListings = $listingData['total'];
+
+$reviewCountQuery = mysqli_query(
+    $conn,
+    "SELECT COUNT(*) AS total
+     FROM review r
+     INNER JOIN service_product s
+     ON r.service_id = s.service_id
+     WHERE s.user_id = '$user_id'"
+);
+
+$reviewCountData =
+mysqli_fetch_assoc($reviewCountQuery);
+
+$totalReviews =
+$reviewCountData['total'];
+
+$bookingCountQuery = mysqli_query(
+    $conn,
+    "SELECT COUNT(*) AS total
+     FROM booking_order
+     WHERE provider_id = '$user_id'
+     AND status = 'Completed'"
+);
+
+$bookingCountData =
+mysqli_fetch_assoc($bookingCountQuery);
+
+$totalBookings =
+$bookingCountData['total'];
+
+$revenueQuery = mysqli_query(
+
+$conn,
+
+"SELECT SUM(s.price) AS revenue
+
+ FROM booking_order b
+
+ INNER JOIN service_product s
+ ON b.service_id = s.service_id
+
+ WHERE b.provider_id = '$user_id'
+
+ AND b.status = 'Completed'"
+
+);
+
+$revenueData =
+mysqli_fetch_assoc($revenueQuery);
+
+$revenue =
+$revenueData['revenue'] ?? 0;
+
     ?>
 
 <!DOCTYPE html>
@@ -168,7 +231,7 @@ ORDER BY review.review_date DESC"
     </div>
 
     <div class="nav-menu">
-        <a href="sell.html"><button class="sell-button">SELL</button></a>
+        <a href="sell.php"><button class="sell-button">SELL</button></a>
 
         <a href="#">
             <img src="image/profile-round-1342-svgrepo-com.svg">
@@ -201,9 +264,25 @@ ORDER BY review.review_date DESC"
 
         <div class="profile-left">
 
-            <img src="image/user-svgrepo-com.svg"
-                 alt="Profile Picture"
-                 class="profile-image">
+<?php
+if(!empty($user['profile_image'])){
+?>
+
+<img
+src="uploads/<?php echo $user['profile_image']; ?>"
+class="profile-img">
+
+<?php
+}else{
+?>
+
+<img
+src="image/profile-round-1342-svgrepo-com.svg"
+class="profile-img">
+
+<?php
+}
+?>
 
         </div>
 
@@ -227,9 +306,9 @@ ORDER BY review.review_date DESC"
 
         </div>
 
-        <button class="edit-profile-btn">
-            Edit Profile
-        </button>
+        <a href="editProfile.php">
+        <button class="edit-profile-btn">Edit Profile</button>
+        </a>
 
     </div>
 
@@ -359,25 +438,25 @@ while($order = mysqli_fetch_assoc($sellerOrderQuery)){
         <div class="insight-card">
             <span>📦</span>
             <h3>Total Listings</h3>
-            <p>12</p>
+            <p><?php echo $totalListings; ?></p>
         </div>
 
         <div class="insight-card">
-            <span>💰</span>
-            <h3>Total Sales</h3>
-            <p>8</p>
+            <span>⭐</span>
+            <h3>Total Reviews</h3>
+            <p><?php echo $totalReviews; ?></p>
         </div>
 
         <div class="insight-card">
             <span>🛒</span>
             <h3>Revenue</h3>
-            <p>RM1250</p>
+            <p>RM <?php echo number_format($revenue,2); ?></p>
         </div>
 
         <div class="insight-card">
             <span>📅</span>
             <h3>Bookings</h3>
-            <p>5</p>
+            <p><?php echo $totalBookings; ?></p>
         </div>
 
     </div>

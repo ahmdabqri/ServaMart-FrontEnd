@@ -14,6 +14,19 @@ $serviceQuery = mysqli_query(
 
 $service = mysqli_fetch_assoc($serviceQuery);
 
+$allSlots = [
+
+    "9.00 AM",
+    "10.00 AM",
+    "11.00 AM",
+    "12.00 PM",
+    "1.00 PM",
+    "2.00 PM",
+    "3.00 PM",
+    "4.00 PM"
+
+];
+
 $reviewQuery = mysqli_query(
     $conn,
     "SELECT
@@ -39,17 +52,6 @@ $userQuery = mysqli_query(
 );
 
 $provider = mysqli_fetch_assoc($userQuery);
-
-$slots = [
-    "9.00 AM",
-    "10.00 AM",
-    "11.00 AM",
-    "12.00 PM",
-    "1.00 PM",
-    "2.00 PM",
-    "3.00 PM",
-    "4.00 PM"
-];
 
 ?>
 
@@ -156,11 +158,11 @@ $slots = [
 
         </div>
 
-        <form action="processBooking.php" method="POST">
+        <form id="bookingForm" action="processBooking.php" method="POST">
 
         <div class="form-group">
             <label>Select Date</label>
-            <input type="date" name="booking_date" required>
+            <input type="date" id="bookingDate" name="booking_date" required>
             <input type="hidden" name="booking_time" id="bookingTime">
             <small id="dateError" class="error"></small>
         </div>
@@ -170,23 +172,24 @@ $slots = [
 
             <div class="slot-grid">
 
-               
+                <?php
 
-                <button type="button" class="slot-btn">9.00 AM</button>
+                foreach($allSlots as $slot){
 
-                <button type="button" class="slot-btn">10.00 AM</button>
+                ?>
 
-                <button type="button" class="slot-btn">11.00 AM</button>
+                <button
+                type="button"
+                class="slot-btn"
+                data-slot="<?php echo $slot; ?>">
 
-                <button type="button" class="slot-btn">12.00 PM</button>
+                <?php echo $slot; ?>
 
-                <button type="button" class="slot-btn">1.00 PM</button>
+                </button>
 
-                <button type="button" class="slot-btn">2.00 PM</button>
-
-                <button type="button" class="slot-btn">3.00 PM</button>
-
-                <button type="button" class="slot-btn">4.00 PM</button>
+                <?php
+                }
+                ?>
 
             </div>
 
@@ -206,6 +209,13 @@ $slots = [
     </div>
 
 </section>
+
+<script>
+
+const serviceId =
+<?php echo $service['service_id']; ?>;
+
+</script>
  
 <script src="bookingService.js"></script>
 </body>
