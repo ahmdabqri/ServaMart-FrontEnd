@@ -82,6 +82,55 @@ $incomingBookingQuery = mysqli_query(
      ORDER BY booking_order.booking_date DESC"
 );
 
+$ratingQuery = mysqli_query(
+    $conn,
+    "SELECT
+        AVG(rating) AS avg_rating,
+        COUNT(review_id) AS total_reviews
+     FROM review
+     WHERE service_id IN
+     (
+         SELECT service_id
+         FROM service_product
+         WHERE user_id = '$user_id'
+     )"
+);
+
+$ratingData = mysqli_fetch_assoc($ratingQuery);
+
+$avgRating =
+number_format($ratingData['avg_rating'] ?? 0,1);
+
+$totalReviews =
+$ratingData['total_reviews'] ?? 0;
+
+$reviewQuery = mysqli_query(
+$conn,
+
+"SELECT
+review.*,
+userr.name AS user_name,
+service_product.name AS service_name
+
+FROM review
+
+LEFT JOIN userr
+ON review.user_id = userr.user_id
+
+LEFT JOIN service_product
+ON review.service_id = service_product.service_id
+
+WHERE review.service_id IN (
+
+    SELECT service_id
+    FROM service_product
+    WHERE user_id = '$user_id'
+
+)
+
+ORDER BY review.review_date DESC"
+);
+
     ?>
 
 <!DOCTYPE html>
@@ -167,9 +216,12 @@ $incomingBookingQuery = mysqli_query(
             <p>UTeM ServaMart Member</p>
 
             <div class="profile-stats">
-
-                <span>⭐ 4.8 Rating</span>
-                <span>25 Reviews</span>
+                <?php if($totalReviews > 0){
+                        echo "⭐ ".$avgRating." Rating";
+                       }
+                     else{ echo "No Ratings Yet"; } ?>
+                
+                <span><?php echo $totalReviews; ?> Reviews</span>
 
             </div>
 
@@ -339,67 +391,67 @@ while($order = mysqli_fetch_assoc($sellerOrderQuery)){
 
         <div class="review-list">
 
-        <div class="review-card">
+<?php
+while($review = mysqli_fetch_assoc($reviewQuery)){
+?>
 
-        <div class="review-header">
+<div class="review-card">
 
-            <h3>Ahmad</h3>
+    <div class="service-title">
 
-            <span class="review-rating">
-                ⭐⭐⭐⭐⭐
-            </span>
-
-        </div>
-
-        <p class="review-comment">
-            Fast response and trusted seller.
-            Item received in excellent condition.
-        </p>
-
-        <small>10 June 2026</small>
+    <?php echo $review['service_name']; ?>
 
     </div>
 
-     <div class="review-card">
+    <div class="review-header">
 
-        <div class="review-header">
+        <h3>
+            <?php echo $review['user_name']; ?>
+        </h3>
 
-            <h3>Ali</h3>
+        <span class="review-rating">
 
-            <span class="review-rating">
-                ⭐⭐⭐⭐
-            </span>
+            <?php
 
-        </div>
+            for($i=1; $i<=5; $i++){
 
-        <p class="review-comment">
-            Good service and easy to deal with.
-        </p>
+                if($i <= $review['rating']){
 
-        <small>5 June 2026</small>
+                    echo "⭐";
 
-    </div>
+                }else{
 
-    <div class="review-card">
+                    echo "☆";
 
-        <div class="review-header">
+                }
 
-            <h3>Siti</h3>
+            }
 
-            <span class="review-rating">
-                ⭐⭐⭐⭐⭐
-            </span>
+            ?>
 
-        </div>
-
-        <p class="review-comment">
-            Highly recommended seller.
-        </p>
-
-        <small>1 June 2026</small>
+        </span>
 
     </div>
-    </div>
+
+    <p class="review-comment">
+
+        <?php echo $review['comment']; ?>
+
+    </p>
+
+    <small>
+
+        <?php echo $review['review_date']; ?>
+
+    </small>
+
+</div>
+
+<?php
+}
+?>
+
+</div>
     </div>
 
     <div id="purchasesContent" class="tab-content">
@@ -493,6 +545,7 @@ if(mysqli_num_rows($purchaseQuery) > 0){
                 <th>Date</th>
                 <th>Time</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
 
         </thead>
@@ -521,6 +574,20 @@ while($booking = mysqli_fetch_assoc($bookingQuery)){
         <?php echo $booking['booking_time']; ?>
     </td>
 
+    <?php
+
+$checkReview = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM review
+     WHERE booking_id = '".$booking['booking_id']."'"
+);
+
+$alreadyReviewed =
+mysqli_num_rows($checkReview);
+
+?>
+
     <td>
 
         <span class="status
@@ -531,6 +598,36 @@ while($booking = mysqli_fetch_assoc($bookingQuery)){
         </span>
 
     </td>
+
+    <td>
+
+<?php
+if(
+    $booking['status'] == 'Completed' && $alreadyReviewed == 0
+){
+?>
+
+<a href="reviewService.php?
+   service_id=<?php echo $booking['service_id']; ?>
+   &booking_id=<?php echo $booking['booking_id']; ?>">
+
+    <button class="review-btn">Leave Review</button>
+</a>
+
+<?php
+}
+elseif($alreadyReviewed > 0){
+?>
+
+<span class="reviewed-badge">
+    Reviewed
+</span>
+
+<?php
+}
+?>
+
+</td>
 
 </tr>
 
@@ -603,21 +700,25 @@ if($incoming['status'] == 'Pending'){
 
 <a href="approveBooking.php?id=<?php echo $incoming['booking_id']; ?>">
 
-<button class="approve-btn">
-Approve
-</button>
+<button class="approve-btn">Approve</button>
 
 </a>
 
 <a href="rejectBooking.php?id=<?php echo $incoming['booking_id']; ?>">
 
-<button class="reject-btn">
-Reject
-</button>
+<button class="reject-btn">Reject</button>
 
 </a>
 
 </div>
+
+<?php   } elseif($incoming['status'] == 'Confirmed'){ ?>
+
+<a href="completeBooking.php?id=<?php echo $incoming['booking_id']; ?>">
+
+<button class="complete-btn"> Complete </button>
+
+</a>
 
 <?php
 }

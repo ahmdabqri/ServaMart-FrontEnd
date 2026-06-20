@@ -14,6 +14,23 @@ $serviceQuery = mysqli_query(
 
 $service = mysqli_fetch_assoc($serviceQuery);
 
+$reviewQuery = mysqli_query(
+    $conn,
+    "SELECT
+        AVG(rating) AS avg_rating,
+        COUNT(review_id) AS total_reviews
+     FROM review
+     WHERE service_id = '".$service['service_id']."'"
+);
+
+$reviewData = mysqli_fetch_assoc($reviewQuery);
+
+$avgRating =
+number_format($reviewData['avg_rating'] ?? 0, 1);
+
+$totalReviews =
+$reviewData['total_reviews'] ?? 0;
+
 $userQuery = mysqli_query(
     $conn,
     "SELECT *
@@ -107,7 +124,27 @@ $slots = [
                 
             <h3><?php echo $service['name']; ?></h3>
 
-            <div class="service-rating">⭐ 4.8 (25 Reviews)</div>
+            <div class="service-rating">
+
+                <?php
+                if($totalReviews > 0){
+                ?>
+
+                ⭐ <?php echo $avgRating; ?>
+                (<?php echo $totalReviews; ?> Reviews)
+
+                <?php
+                }
+                else{
+                ?>
+
+                No Reviews Yet
+
+                <?php
+                }
+                ?>
+
+            </div>
 
             <p><strong>Provider :</strong> <?php echo $provider['name']; ?></p>
             
