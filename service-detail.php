@@ -116,7 +116,8 @@ $service = mysqli_fetch_assoc($query);
 
         <div class="action-button">
 
-        <a href="bookingService.php"><button class="cart-btn">
+        <a  href="bookingService.php?id=<?php echo $service['service_id']; ?>"
+        ><button class="cart-btn">
             Book Service
         </button></a>
 

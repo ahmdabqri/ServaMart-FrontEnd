@@ -20,6 +20,97 @@ $paymentQuery = mysqli_query(
      ORDER BY order_date DESC"
 );
 
+$userSearch = $_GET['user_search'] ?? '';
+
+$userQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM userr
+     WHERE name LIKE '%$userSearch%'
+     OR email LIKE '%$userSearch%'
+     ORDER BY user_id DESC"
+);
+
+$productSearch = $_GET['product_search'] ?? '';
+
+$productQuery = mysqli_query(
+    $conn,
+    "SELECT
+        preloved_product.*,
+        userr.name AS seller_name
+     FROM preloved_product
+     INNER JOIN userr
+     ON preloved_product.user_id = userr.user_id
+     WHERE preloved_product.name
+     LIKE '%$productSearch%'
+     ORDER BY preloved_product.preloved_id DESC"
+);
+
+$serviceSearch = $_GET['service_search'] ?? '';
+
+$serviceQuery = mysqli_query(
+    $conn,
+    "SELECT
+        service_product.*,
+        userr.name AS provider_name
+     FROM service_product
+     INNER JOIN userr
+     ON service_product.user_id = userr.user_id
+     WHERE service_product.name
+     LIKE '%$serviceSearch%'
+     ORDER BY service_product.service_id DESC"
+);
+
+$totalUsers = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM userr")
+);
+
+$totalProducts = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM preloved_product")
+);
+
+$totalServices = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM service_product")
+);
+
+$totalOrders = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM order_table")
+);
+
+$totalBookings = mysqli_num_rows(
+    mysqli_query($conn,"SELECT * FROM booking_order")
+);
+
+$totalRevenueQuery = mysqli_query(
+    $conn,
+    "SELECT SUM(total_amount) AS revenue
+     FROM order_table
+     WHERE payment_status = 'Completed'"
+);
+
+$totalRevenue = mysqli_fetch_assoc(
+    $totalRevenueQuery
+);
+
+$pendingPayments = mysqli_num_rows(
+    mysqli_query(
+        $conn,
+        "SELECT *
+         FROM order_table
+         WHERE payment_status =
+         'Pending Verification'"
+    )
+);
+
+$completedOrders = mysqli_num_rows(
+    mysqli_query(
+        $conn,
+        "SELECT *
+         FROM order_table
+         WHERE payment_status='Completed'"
+    )
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -77,8 +168,15 @@ $paymentQuery = mysqli_query(
         <div id="userContent"
      class="admin-content active-content">
 
-    <input type="text"
-           placeholder="Search User">
+    <form method="GET">
+
+    <input
+        type="text"
+        name="user_search"
+        placeholder="Search User"
+        value="<?php echo $userSearch; ?>">
+
+</form>
 
     <table class="admin-table">
 
@@ -89,20 +187,56 @@ $paymentQuery = mysqli_query(
             <th>Action</th>
         </tr>
 
-        <tr>
-            <td>Ahmad Abqari</td>
-            <td>d032410278@student.utem.edu.my</td>
-            <td>
-                <span class="status active-status">
-                    Active
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+        <?php
+while($user = mysqli_fetch_assoc($userQuery)){
+?>
+<tr>
+
+    <td>
+        <?php echo $user['name']; ?>
+    </td>
+
+    <td>
+        <?php echo $user['email']; ?>
+    </td>
+
+    <td>
+
+        <span class="status active-status">
+
+            <?php echo ucfirst($user['role']); ?>
+
+        </span>
+
+    </td>
+
+    <td>
+
+        <?php
+        if($user['role'] != 'admin'){
+        ?>
+
+        <a href="deleteUser.php?id=<?php echo $user['user_id']; ?>">
+
+            <button class="delete-btn">
+
+                Delete
+
+            </button>
+
+        </a>
+
+        <?php
+        }
+        ?>
+
+    </td>
+
+</tr>
+
+<?php
+}
+?>
 
     </table>
 
@@ -113,8 +247,15 @@ $paymentQuery = mysqli_query(
 
     <h3>Manage Product</h3>
 
-    <input type="text"
-           placeholder="Search Product">
+<form method="GET">
+
+    <input
+        type="text"
+        name="product_search"
+        placeholder="Search Product"
+        value="<?php echo $productSearch; ?>">
+
+</form>
 
     <table class="admin-table">
 
@@ -126,29 +267,45 @@ $paymentQuery = mysqli_query(
             <th>Action</th>
         </tr>
 
-        <tr>
-            <td>P001</td>
-            <td>Desporte Futsal Shoes</td>
-            <td>RM300</td>
-            <td>Ahmad</td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+        <?php while($product = mysqli_fetch_assoc($productQuery)){ ?>
 
         <tr>
-            <td>P002</td>
-            <td>Gaming Mouse</td>
-            <td>RM50</td>
-            <td>Ali</td>
+
             <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
+                <?php echo $product['preloved_id']; ?>
             </td>
+
+            <td>
+                <?php echo $product['name']; ?>
+            </td>
+
+            <td>
+                RM <?php echo number_format($product['price'],2); ?>
+            </td>
+
+            <td>
+                <?php echo $product['seller_name']; ?>
+            </td>
+
+            <td>
+
+                <a
+                href="deleteProduct.php?id=<?php echo $product['preloved_id']; ?>"
+                onclick="return confirm('Delete this product?')">
+
+                    <button class="delete-btn">
+                        Delete
+                    </button>
+
+                </a>
+
+            </td>
+
         </tr>
+
+        <?php
+        }
+        ?>
 
     </table>
 
@@ -159,8 +316,15 @@ $paymentQuery = mysqli_query(
 
     <h3>Manage Services</h3>
 
-    <input type="text"
-           placeholder="Search Service">
+    <form method="GET">
+
+    <input
+        type="text"
+        name="service_search"
+        placeholder="Search Service"
+        value="<?php echo $serviceSearch; ?>">
+
+</form>
 
     <table class="admin-table">
 
@@ -169,44 +333,55 @@ $paymentQuery = mysqli_query(
             <th>Service Name</th>
             <th>Provider</th>
             <th>Price</th>
+            <th>Status</th>
             <th>Action</th>
         </tr>
 
-        <tr>
-            <td>S001</td>
-            <td>Laundry Service</td>
-            <td>Ahmad</td>
-            <td>RM15</td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+        <?php
+while($service = mysqli_fetch_assoc($serviceQuery)){
+?>
 
-        <tr>
-            <td>S002</td>
-            <td>Laptop Repair</td>
-            <td>Ali</td>
-            <td>RM50</td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+<tr>
 
-        <tr>
-            <td>S003</td>
-            <td>DSA Tutoring</td>
-            <td>Wan</td>
-            <td>RM25</td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+    <td>
+        <?php echo $service['service_id']; ?>
+    </td>
+
+    <td>
+        <?php echo $service['name']; ?>
+    </td>
+
+    <td>
+        <?php echo $service['provider_name']; ?>
+    </td>
+
+    <td>
+        RM <?php echo number_format($service['price'],2); ?>
+    </td>
+
+    <td>
+        <?php echo $service['status']; ?>
+    </td>
+
+    <td>
+
+        <a
+        href="deleteService.php?id=<?php echo $service['service_id']; ?>"
+        onclick="return confirm('Delete this service?')">
+
+            <button class="delete-btn">
+                Delete
+            </button>
+
+        </a>
+
+    </td>
+
+</tr>
+
+<?php
+}
+?>
 
     </table>
 
@@ -378,7 +553,7 @@ while($payment = mysqli_fetch_assoc($paymentQuery)){
 
             <h4>Total Users</h4>
 
-            <p>120</p>
+            <p><?php echo $totalUsers; ?></p>
 
         </div>
 
@@ -386,7 +561,7 @@ while($payment = mysqli_fetch_assoc($paymentQuery)){
 
             <h4>Total Products</h4>
 
-            <p>85</p>
+            <p><?php echo $totalProducts; ?></p>
 
         </div>
 
@@ -394,7 +569,7 @@ while($payment = mysqli_fetch_assoc($paymentQuery)){
 
             <h4>Total Services</h4>
 
-            <p>42</p>
+            <p><?php echo $totalServices; ?></p>
 
         </div>
 
@@ -402,7 +577,7 @@ while($payment = mysqli_fetch_assoc($paymentQuery)){
 
             <h4>Total Orders</h4>
 
-            <p>67</p>
+            <p><?php echo $totalOrders; ?></p>
 
         </div>
 
@@ -410,15 +585,35 @@ while($payment = mysqli_fetch_assoc($paymentQuery)){
 
             <h4>Total Bookings</h4>
 
-            <p>31</p>
+            <p><?php echo $totalBookings; ?></p>
 
         </div>
 
         <div class="report-card">
 
+        <h4>Pending Payments</h4>
+
+        <p>
+            <?php echo $pendingPayments; ?>
+        </p>
+
+        </div>
+
+        <div class="report-card">
+
+    <h4>Completed Orders</h4>
+
+    <p>
+        <?php echo $completedOrders; ?>
+    </p>
+
+</div>
+
+        <div class="report-card">
+
             <h4>Total Revenue</h4>
 
-            <p>RM 5,250</p>
+            <p>RM <?php echo number_format($totalRevenue['revenue'] ?? 0,2); ?></p>
 
         </div>
 

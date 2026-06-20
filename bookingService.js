@@ -17,11 +17,11 @@ slots.forEach(slot => {
 
             slot.classList.add("active");
 
-            selectedSlot =
-            slot.textContent;
+           selectedSlot = slot.textContent;
 
-            selectedSlotText.textContent =
-            "Selected: " + selectedSlot;
+            document.getElementById("bookingTime").value = selectedSlot;
+
+            selectedSlotText.textContent = "Selected: " + selectedSlot;
 
         });
 
@@ -29,10 +29,10 @@ slots.forEach(slot => {
 
 });
 
-const bookBtn =
-document.getElementById("bookBtn");
+const bookingForm =
+document.getElementById("bookingForm");
 
-bookBtn.addEventListener("click", () => {
+bookingForm.addEventListener("submit", (e) => {
 
     const bookingDate =
     document.getElementById("bookingDate").value;
@@ -63,36 +63,10 @@ bookBtn.addEventListener("click", () => {
         isValid = false;
     }
 
-    if(isValid){
+    if(!isValid){
 
-        const confirmBooking =
-            confirm(
-            "Confirm booking on " +
-            bookingDate +
-            " at " +
-            selectedSlot + " ?"
-            );
-
-            if(confirmBooking){
-
-                alert(
-                "Booking Successful!"
-                );
-
-                window.location.href =
-                "bookings.html";
-
-}
+        e.preventDefault();
 
     }
 
 });
-
-
-const bookingDate =
-document.getElementById("bookingDate");
-
-const today =
-new Date().toISOString().split("T")[0];
-
-bookingDate.min = today;

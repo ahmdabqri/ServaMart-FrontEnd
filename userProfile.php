@@ -49,6 +49,39 @@
      AND order_table.payment_status = 'In Progress'"
 );
 
+$bookingQuery = mysqli_query(
+    $conn,
+    "SELECT booking_order.*,
+            service_product.name AS service_name
+     FROM booking_order
+     INNER JOIN service_product
+     ON booking_order.service_id =
+        service_product.service_id
+     WHERE booking_order.user_id = '$user_id'
+     ORDER BY booking_order.booking_date DESC"
+);
+
+$incomingBookingQuery = mysqli_query(
+    $conn,
+    "SELECT booking_order.*,
+            service_product.name AS service_name,
+            userr.name AS customer_name
+     FROM booking_order
+
+     INNER JOIN service_product
+     ON booking_order.service_id =
+        service_product.service_id
+
+     INNER JOIN userr
+     ON booking_order.user_id =
+        userr.user_id
+
+     WHERE booking_order.provider_id =
+           '$user_id'
+
+     ORDER BY booking_order.booking_date DESC"
+);
+
     ?>
 
 <!DOCTYPE html>
@@ -169,6 +202,8 @@
         <button id="bookingsTab" class="tab-btn">
             Bookings
         </button>
+
+        <button id="incomingTab" class="tab-btn">Incoming Bookings</button>
 
         <button id="paymentTab" class="tab-btn">
             Payment Info
@@ -456,6 +491,7 @@ if(mysqli_num_rows($purchaseQuery) > 0){
                 <th>Service</th>
                 <th>Booking ID</th>
                 <th>Date</th>
+                <th>Time</th>
                 <th>Status</th>
             </tr>
 
@@ -463,55 +499,143 @@ if(mysqli_num_rows($purchaseQuery) > 0){
 
         <tbody>
 
-            <tr>
-                <td>Aircond Cleaning</td>
-                <td>BK001</td>
-                <td>20 June 2026</td>
-                <td>
-                    <span class="status confirmed">
-                        Confirmed
-                    </span>
-                </td>
-            </tr>
+<?php
+while($booking = mysqli_fetch_assoc($bookingQuery)){
+?>
 
-            <tr>
-                <td>Laptop Repair</td>
-                <td>BK002</td>
-                <td>25 June 2026</td>
-                <td>
-                    <span class="status completed">
-                        Completed
-                    </span>
-                </td>
-            </tr>
+<tr>
 
-            <tr>
-                <td>House Cleaning</td>
-                <td>BK003</td>
-                <td>30 June 2026</td>
-                <td>
-                    <span class="status pending">
-                        Pending
-                    </span>
-                </td>
-            </tr>
+    <td>
+        <?php echo $booking['service_name']; ?>
+    </td>
 
-            <tr>
-                <td>Laundry</td>
-                <td>BK023</td>
-                <td>20 June 2026</td>
-                <td>
-                    <span class="status cancelled">
-                        Cancelled
-                    </span>
-                </td>
-            </tr>
+    <td>
+        BK<?php echo $booking['booking_id']; ?>
+    </td>
 
-        </tbody>
+    <td>
+        <?php echo $booking['booking_date']; ?>
+    </td>
+
+    <td>
+        <?php echo $booking['booking_time']; ?>
+    </td>
+
+    <td>
+
+        <span class="status
+        <?php echo strtolower($booking['status']); ?>">
+
+            <?php echo $booking['status']; ?>
+
+        </span>
+
+    </td>
+
+</tr>
+
+<?php
+}
+?>
+
+</tbody>
 
     </table>
 
     </div>
+
+    <div id="incomingContent" class="tab-content">
+
+<h2>Incoming Bookings</h2>
+
+<table class="booking-table">
+
+<thead>
+
+<tr>
+
+<th>Customer</th>
+<th>Service</th>
+<th>Date</th>
+<th>Time</th>
+<th>Status</th>
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<?php
+while($incoming = mysqli_fetch_assoc($incomingBookingQuery)){
+?>
+
+<tr>
+
+<td>
+    <?php echo $incoming['customer_name']; ?>
+</td>
+
+<td>
+    <?php echo $incoming['service_name']; ?>
+</td>
+
+<td>
+    <?php echo $incoming['booking_date']; ?>
+</td>
+
+<td>
+    <?php echo $incoming['booking_time']; ?>
+</td>
+
+<td>
+    <?php echo $incoming['status']; ?>
+</td>
+
+<td>
+
+<?php
+if($incoming['status'] == 'Pending'){
+?>
+
+<div class="action-buttons">
+
+<a href="approveBooking.php?id=<?php echo $incoming['booking_id']; ?>">
+
+<button class="approve-btn">
+Approve
+</button>
+
+</a>
+
+<a href="rejectBooking.php?id=<?php echo $incoming['booking_id']; ?>">
+
+<button class="reject-btn">
+Reject
+</button>
+
+</a>
+
+</div>
+
+<?php
+}
+?>
+
+</td>
+
+</tr>
+
+<?php
+}
+?>
+
+</tbody>
+
+</table>
+
+</div>
 
     <div id="paymentContent" class="tab-content">
 

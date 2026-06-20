@@ -135,7 +135,7 @@ usort($items, function($a, $b){
         <!--Category Section-->
         <section class="category-section">
 
-            <a href="PrelovedItemList.html" class="category-link">
+            <a href="PrelovedItemList.php" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/preloved.jpg"></div>
                 <h3>Preloved</h3>
