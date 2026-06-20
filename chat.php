@@ -36,24 +36,24 @@ if(!isset($_SESSION['user_id'])){
     </div>
 
     <div class="nav-menu">
-        <a href="sell.html"><button class="sell-button">SELL</button></a>
+        <a href="sell.php"><button class="sell-button">SELL</button></a>
 
-        <a href="userProfile.html">
+        <a href="userProfile.php">
             <img src="image/profile-round-1342-svgrepo-com.svg">
             <span>Profile</span>
         </a>
 
-        <a href="cart.html">
+        <a href="cart.php">
             <img src="image/cart-shopping-svgrepo-com.svg">
             <span>Cart</span>
         </a>
 
-        <a href="chat.html">
+        <a href="chat.php">
             <img src="image/message-circle-chat-svgrepo-com.svg">
             <span>Message</span>
         </a>
 
-        <a href="#">
+        <a href="bookings.php">
             <img src="image/calendar-days-svgrepo-com.svg">
             <span>Booking</span>
         </a>
