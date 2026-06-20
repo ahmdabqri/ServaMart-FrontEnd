@@ -14,10 +14,26 @@ $_POST['provider_id'];
 $booking_date =
 $_POST['booking_date'];
 
-$booking_time =
-$_POST['booking_time'];
+$booking_time = trim($_POST['booking_time']);
 
 $status = "Pending";
+
+// untuk prevent double booking 
+$check = mysqli_query(
+$conn,
+"SELECT *
+ FROM booking_order
+ WHERE booking_date='$booking_date'
+ AND booking_time='$booking_time'
+ AND service_id='$service_id'
+ AND status != 'Cancelled'"
+);
+
+if(mysqli_num_rows($check) > 0){
+
+    die("Slot already taken");
+
+}
 
 mysqli_query(
     $conn,
