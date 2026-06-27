@@ -142,7 +142,7 @@ usort($items, function($a, $b){
             </div>
             </a>
 
-            <a href="ServiceList.html" class="category-link">
+            <a href="ServiceList.php" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/service.jpg"></div>
                 <h3>Service</h3>
