@@ -8,6 +8,20 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
     $user_id = $_SESSION['user_id'];
 
+    $result = mysqli_query($conn,"
+SELECT bank_account,payment_qr
+FROM userr
+WHERE user_id='$user_id'
+");
+
+$user = mysqli_fetch_assoc($result);
+
+if(empty($user['bank_account']) || empty($user['payment_qr']))
+{
+    header("Location: paymentRequired.php");
+    exit();
+}
+
     $name = $_POST['itemName'];
     $description = $_POST['description'];
     $price = $_POST['price'];

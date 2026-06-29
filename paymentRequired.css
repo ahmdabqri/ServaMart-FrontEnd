@@ -1,0 +1,80 @@
+body{
+
+    margin:0;
+    height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#f8f9fa;
+
+    font-family:Poppins,sans-serif;
+
+}
+
+.payment-required-card{
+
+    width:500px;
+
+    background:white;
+
+    padding:50px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.icon{
+
+    font-size:70px;
+
+    margin-bottom:20px;
+
+}
+
+.payment-required-card h2{
+
+    margin-bottom:15px;
+
+}
+
+.payment-required-card p{
+
+    color:#666;
+
+    line-height:1.7;
+
+    margin-bottom:35px;
+
+}
+
+.payment-btn{
+
+    background:black;
+
+    color:white;
+
+    border:none;
+
+    padding:15px 35px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    font-weight:600;
+
+}
+
+.payment-btn:hover{
+
+    background:#222;
+
+}
