@@ -111,6 +111,32 @@ $completedOrders = mysqli_num_rows(
     )
 );
 
+$bookingQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+
+booking_order.booking_id,
+booking_order.booking_date,
+booking_order.status,
+
+userr.name AS customer_name,
+
+service_product.name AS service_name
+
+FROM booking_order
+
+INNER JOIN userr
+ON booking_order.user_id = userr.user_id
+
+INNER JOIN service_product
+ON booking_order.service_id = service_product.service_id
+
+ORDER BY booking_order.booking_date DESC"
+
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -388,76 +414,93 @@ while($service = mysqli_fetch_assoc($serviceQuery)){
 </div>
 
 <div id="bookingContent"
-     class="admin-content">
+class="admin-content">
 
-    <h3>Manage Booking</h3>
+<h3>Manage Booking</h3>
 
-    <input type="text"
-           placeholder="Search Booking">
+<input
+type="text"
+placeholder="Search Booking">
 
-    <table class="admin-table">
+<table class="admin-table">
 
-        <tr>
-            <th>Booking ID</th>
-            <th>Customer</th>
-            <th>Service</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
+<tr>
 
-        <tr>
-            <td>B001</td>
-            <td>Ahmad</td>
-            <td>Laundry Service</td>
-            <td>20 June 2026</td>
-            <td>
-                <span class="booking-status confirmed">
-                    Confirmed
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+<th>Booking ID</th>
+<th>Customer</th>
+<th>Service</th>
+<th>Date</th>
+<th>Status</th>
+<th>Action</th>
 
-        <tr>
-            <td>B002</td>
-            <td>Ali</td>
-            <td>Laptop Repair</td>
-            <td>22 June 2026</td>
-            <td>
-                <span class="booking-status pending">
-                    Pending
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+</tr>
 
-        <tr>
-            <td>B003</td>
-            <td>Siti</td>
-            <td>DSA Tutoring</td>
-            <td>25 June 2026</td>
-            <td>
-                <span class="booking-status completed">
-                    Completed
-                </span>
-            </td>
-            <td>
-                <button class="delete-btn">
-                    Delete
-                </button>
-            </td>
-        </tr>
+<?php
 
-    </table>
+while($booking = mysqli_fetch_assoc($bookingQuery)){
+
+?>
+
+<tr>
+
+<td>
+
+<?php echo $booking['booking_id']; ?>
+
+</td>
+
+<td>
+
+<?php echo $booking['customer_name']; ?>
+
+</td>
+
+<td>
+
+<?php echo $booking['service_name']; ?>
+
+</td>
+
+<td>
+
+<?php echo date("d M Y",strtotime($booking['booking_date'])); ?>
+
+</td>
+
+<td>
+
+<span class="booking-status
+<?php echo strtolower(str_replace(' ','-',$booking['status'])); ?>">
+
+<?php echo $booking['status']; ?>
+
+</span>
+
+</td>
+
+<td>
+
+<a href="viewBooking.php?id=<?php echo $booking['booking_id']; ?>">
+
+<button class="view-btn">
+
+View
+
+</button>
+
+</a>
+
+</td>
+
+</tr>
+
+<?php
+
+}
+
+?>
+
+</table>
 
 </div>
 

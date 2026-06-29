@@ -303,3 +303,28 @@
 .admin-table td:last-child{
     white-space:nowrap;
 }
+
+.view-btn{
+
+    background:#2563eb;
+    color:white;
+
+    border:none;
+
+    padding:10px 22px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.view-btn:hover{
+
+    background:#1d4ed8;
+
+}

@@ -17,7 +17,6 @@ $items = [];
 $productQuery = mysqli_query(
     $conn,
     "SELECT * FROM preloved_product
-    WHERE status='Available'
     ORDER BY created_at DESC"
 );
 
@@ -270,9 +269,24 @@ mysqli_fetch_assoc($serviceSpotlightQuery);
 
     <?php if($row['type'] == 'product'){ ?>
 
+    <?php
+if($row['status'] == "Available"){
+?>
 <a href="product-detail.php?id=<?php echo $row['preloved_id']; ?>">
-    <button>View Details</button>
+    <button>Buy Now</button>
 </a>
+<?php
+}
+else{
+?>
+
+<button class="sold-btn" disabled>
+    Sold Out
+</button>
+
+<?php
+}
+?>
 
 <?php } else { ?>
 

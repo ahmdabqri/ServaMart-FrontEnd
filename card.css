@@ -76,3 +76,22 @@
 .product-section{
     width:100%;
 }
+
+.sold-btn{
+
+    background:#ef4444;
+    color:white;
+
+    border:none;
+
+    padding:12px 25px;
+
+    border-radius:8px;
+
+    cursor:not-allowed;
+
+    font-weight:600;
+
+    opacity:0.9;
+
+}

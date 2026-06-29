@@ -909,6 +909,12 @@ while($review = mysqli_fetch_assoc($reviewQuery)){
     In Progress
 </button>
 
+<button class="purchase-btn" data-status="waiting-buyer-confirmation">
+
+Waiting Confirmation
+
+</button>
+
 <button class="purchase-btn" data-status="completed">
     Completed
 </button>
@@ -933,29 +939,13 @@ if(mysqli_num_rows($purchaseQuery) > 0){
 
 data-status="<?php echo strtolower(str_replace(' ','-',$order['payment_status'])); ?>">
 
-<img
-
-class="purchase-image"
-
-src="uploads/<?php echo $order['image']; ?>"
-
-alt="Product">
+<img class="purchase-image" src="uploads/<?php echo $order['image']; ?>" alt="Product">
 
 <div class="purchase-info">
 
-<h3>
+<h3> <?php echo $order['name']; ?> </h3>
 
-<?php echo $order['name']; ?>
-
-</h3>
-
-<p>
-
-Seller :
-
-<?php echo $order['seller_name']; ?>
-
-</p>
+<p>Seller : <?php echo $order['seller_name']; ?></p>
 
 <p>
 
@@ -974,9 +964,38 @@ RM <?php echo number_format($order['total_amount'],2); ?>
 <?php echo $order['payment_status']; ?>
 
 </span>
-        <?php
-if($order['payment_status'] == "Completed"){
+
+<?php
+if($order['payment_status'] == "Waiting Buyer Confirmation"){
 ?>
+
+    <br><br>
+
+    <?php
+    if(!empty($order['delivery_proof'])){
+    ?>
+
+    <div class="purchase-action">
+        
+        <a href="uploads/proof/<?php echo $order['delivery_proof']; ?>" target="_blank" class="view-proof-btn">
+        View Delivery Proof</a>
+
+    <?php
+    }
+    ?>
+
+        <a href="confirmRecieved.php?id=<?php echo $order['order_id']; ?>" class="confirm-btn">
+
+              ✓ Confirm Received
+
+        </a>
+    </div>
+
+<?php
+}
+?>
+
+     <?php if($order['payment_status'] == "Completed"){ ?>
 
     <?php
     if($order['delivery_proof'] != ""){
