@@ -191,3 +191,80 @@ flex-shrink:0;
 flex:1;
 
 }
+
+.confirm-btn{
+
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+.confirm-btn:hover{
+
+    background:#15803d;
+
+    transform:translateY(-2px);
+
+}
+
+.purchase-action{
+
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+
+}
+
+.view-proof-btn,
+.confirm-btn{
+
+    width:220px;
+    height:50px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:10px;
+
+    font-weight:600;
+    font-size:15px;
+
+    text-decoration:none;
+
+    box-sizing:border-box;
+
+    transition:.25s;
+
+}
+.view-proof-btn{
+
+    background:#2563eb;
+    color:#fff;
+
+}
+
+.view-proof-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+.confirm-btn{
+
+    background:#16a34a;
+    color:#fff;
+
+}
+
+.confirm-btn:hover{
+
+    background:#15803d;
+
+}

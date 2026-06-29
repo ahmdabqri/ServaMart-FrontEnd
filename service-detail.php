@@ -134,10 +134,6 @@ $service = mysqli_fetch_assoc($query);
             Book Service
         </button></a>
 
-        <button class="contact-btn">
-        Contact Seller
-        </button>
-
         </div>
 
     </div>

@@ -2,6 +2,7 @@
 
 session_start();
 include 'config.php';
+include 'navbarNotification.php';
 
 $service_id = $_GET['id'];
 

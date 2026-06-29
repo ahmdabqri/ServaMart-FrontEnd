@@ -129,9 +129,29 @@ $product = mysqli_fetch_assoc($query);
 
         <div class="action-button">
 
+        <?php
+if($product['status']=="Available"){
+?>
         <a href="add-cart.php?id=<?php echo $product['preloved_id']; ?>"><button class="cart-btn">
             Add To Cart
         </button></a>
+
+        <?php
+}
+else{
+?>
+
+<button class="sold-btn" disabled>
+    Sold Out
+</button>
+
+<p style="color:#ef4444;font-weight:600;margin-top:10px;">
+    This item has already been sold.
+</p>
+
+<?php
+}
+?>
 
         </div>
 
