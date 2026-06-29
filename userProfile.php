@@ -1,6 +1,7 @@
     <?php
     session_start();
     include 'config.php';
+    include "navbarNotification.php";
 
     if(!isset($_SESSION['user_id'])){
         header("Location: login.php");
@@ -9,6 +10,50 @@
 
     $user_id = $_SESSION['user_id'];
 
+    $reviewReminderQuery = mysqli_query(
+
+$conn,
+
+"SELECT COUNT(*) AS total
+
+FROM booking_order
+
+WHERE user_id = '$user_id'
+
+AND status = 'Completed'
+
+AND booking_id NOT IN(
+
+SELECT booking_id
+
+FROM review
+
+)"
+
+);
+
+$reviewReminder = mysqli_fetch_assoc($reviewReminderQuery);
+
+$reviewCount = $reviewReminder['total'];
+
+    $pendingBookingQuery = mysqli_query(
+
+$conn,
+
+"SELECT COUNT(*) AS total
+
+FROM booking_order
+
+WHERE provider_id = '$user_id'
+
+AND status = 'Pending'"
+
+);
+
+$pendingBooking = mysqli_fetch_assoc($pendingBookingQuery);
+
+$pendingCount = $pendingBooking['total'];
+
     $sql = "SELECT * FROM userr
             WHERE user_id = '$user_id'";
 
@@ -16,13 +61,39 @@
 
     $user = mysqli_fetch_assoc($result);
 
-    $purchaseQuery = mysqli_query(
-        $conn,
-        "SELECT *
-        FROM order_table
-        WHERE user_id = '$user_id'
-        ORDER BY order_date DESC"
-    );
+$purchaseQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+
+order_table.order_id,
+order_table.total_amount,
+order_table.order_date,
+order_table.payment_status,
+order_table.delivery_proof,
+
+preloved_product.name,
+preloved_product.image,
+
+userr.name AS seller_name
+
+FROM order_table
+
+INNER JOIN order_item
+ON order_table.order_id = order_item.order_id
+
+INNER JOIN preloved_product
+ON order_item.preloved_id = preloved_product.preloved_id
+
+INNER JOIN userr
+ON preloved_product.user_id = userr.user_id
+
+WHERE order_table.user_id = '$user_id'
+
+ORDER BY order_table.order_date DESC"
+
+);
 
     $listingQuery = mysqli_query(
         $conn,
@@ -31,15 +102,28 @@
         WHERE user_id = '$user_id'"
     );
 
+    $serviceListingQuery = mysqli_query(
+
+$conn,
+
+"SELECT *
+
+FROM service_product
+
+WHERE user_id = '$user_id'"
+
+);
+
     $sellerOrderQuery = mysqli_query(
     $conn,
     "SELECT
-        order_table.order_id,
-        order_table.payment_status,
-        order_table.full_name,
-        preloved_product.name,
-        preloved_product.price,
-        preloved_product.image
+    order_table.order_id,
+    order_table.payment_status,
+    order_table.delivery_proof,
+    order_table.full_name,
+    preloved_product.name,
+    preloved_product.price,
+    preloved_product.image
      FROM order_table
      JOIN order_item
         ON order_table.order_id = order_item.order_id
@@ -132,10 +216,23 @@ ORDER BY review.review_date DESC"
 );
 
 $listingCountQuery = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total
+
+$conn,
+
+"SELECT
+(
+    (SELECT COUNT(*)
      FROM service_product
-     WHERE user_id = '$user_id'"
+     WHERE user_id = '$user_id')
+
+    +
+
+    (SELECT COUNT(*)
+     FROM preloved_product
+     WHERE user_id = '$user_id')
+
+) AS total"
+
 );
 
 $listingData = mysqli_fetch_assoc($listingCountQuery);
@@ -157,44 +254,119 @@ mysqli_fetch_assoc($reviewCountQuery);
 $totalReviews =
 $reviewCountData['total'];
 
-$bookingCountQuery = mysqli_query(
-    $conn,
-    "SELECT COUNT(*) AS total
-     FROM booking_order
-     WHERE provider_id = '$user_id'
-     AND status = 'Completed'"
-);
-
-$bookingCountData =
-mysqli_fetch_assoc($bookingCountQuery);
-
-$totalBookings =
-$bookingCountData['total'];
-
-$revenueQuery = mysqli_query(
+$transactionQuery = mysqli_query(
 
 $conn,
 
-"SELECT SUM(s.price) AS revenue
+"SELECT
+(
+(
+SELECT COUNT(*)
 
- FROM booking_order b
+FROM booking_order
 
- INNER JOIN service_product s
- ON b.service_id = s.service_id
+WHERE provider_id='$user_id'
 
- WHERE b.provider_id = '$user_id'
+AND status='Completed'
 
- AND b.status = 'Completed'"
+)
+
++
+
+(
+
+SELECT COUNT(*)
+
+FROM order_table
+
+INNER JOIN order_item
+
+ON order_table.order_id=
+order_item.order_id
+
+INNER JOIN preloved_product
+
+ON order_item.preloved_id=
+preloved_product.preloved_id
+
+WHERE
+
+preloved_product.user_id='$user_id'
+
+AND order_table.payment_status='Completed'
+
+)
+
+) AS total"
 
 );
 
-$revenueData =
-mysqli_fetch_assoc($revenueQuery);
+$transactionData =
+mysqli_fetch_assoc($transactionQuery);
 
-$revenue =
-$revenueData['revenue'] ?? 0;
+$totalTransactions =
+$transactionData['total'];
 
-    ?>
+$serviceRevenueQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+SUM(s.price) AS total
+
+FROM booking_order b
+
+INNER JOIN service_product s
+ON b.service_id = s.service_id
+
+WHERE b.provider_id='$user_id'
+
+AND b.status='Completed'"
+
+);
+
+$prelovedRevenueQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+
+SUM(order_item.price) AS total
+
+FROM order_table
+
+INNER JOIN order_item
+ON order_table.order_id = order_item.order_id
+
+INNER JOIN preloved_product
+ON order_item.preloved_id =
+preloved_product.preloved_id
+
+WHERE
+
+preloved_product.user_id='$user_id'
+
+AND order_table.payment_status='Completed'"
+
+);
+
+$prelovedRevenue =
+mysqli_fetch_assoc($prelovedRevenueQuery);
+
+$prelovedTotal =
+$prelovedRevenue['total'] ?? 0;
+
+$serviceRevenue =
+mysqli_fetch_assoc($serviceRevenueQuery);
+
+$serviceTotal =
+$serviceRevenue['total'] ?? 0;
+
+$revenue = $serviceTotal + $prelovedTotal;
+
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -234,8 +406,28 @@ $revenueData['revenue'] ?? 0;
         <a href="sell.php"><button class="sell-button">SELL</button></a>
 
         <a href="userProfile.php">
+
+            <div class="profile-icon">
+
             <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span><?php echo $_SESSION['name']; ?></span>
+        
+
+            <?php
+            if($totalNotification > 0){
+            ?>
+
+                <span class="profile-badge">
+                    <?php echo $totalNotification; ?>
+                </span>
+
+            <?php
+            }
+            ?>
+
+        </div>
+
+        <span>Profile</span>
+
         </a>
 
         <a href="cart.php">
@@ -243,15 +435,6 @@ $revenueData['revenue'] ?? 0;
             <span>Cart</span>
         </a>
 
-        <a href="chat.php">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
-
-        <a href="bookings.php">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>
@@ -327,14 +510,38 @@ class="profile-img">
         </button>
 
         <button id="purchasesTab" class="tab-btn">
-            Purchases
+            My Purchases
         </button>
 
         <button id="bookingsTab" class="tab-btn">
-            Bookings
+            My Bookings
+            <?php
+                if($reviewCount > 0){
+                ?>
+
+                <span class="notif-badge">
+
+                <?php echo $reviewCount; ?>
+
+                </span>
+
+                <?php
+                }
+            ?>
         </button>
 
-        <button id="incomingTab" class="tab-btn">Incoming Bookings</button>
+        <button id="incomingTab" class="tab-btn">
+            Incoming Bookings 
+            <?php
+            if($pendingCount > 0){
+            ?>
+            <span class="notif-badge">
+            <?php echo $pendingCount; ?>
+            </span>
+            <?php
+            }
+            ?>
+        </button>
 
         <button id="paymentTab" class="tab-btn">
             Payment Info
@@ -370,11 +577,93 @@ class="profile-img">
 
                     </div>
 
+                    <div class="listing-actions">
+
+                        <?php
+                        if(isset($product['preloved_id'])){
+                        ?>
+
+                        <a href="editListingPreloved.php?id=<?php echo $product['preloved_id']; ?>">
+
+                        <button class="edit-btn">
+                        Edit
+                        </button>
+
+                        </a>
+
+                        <a href="deleteListingPreloved.php?id=<?php echo $product['preloved_id']; ?>"
+
+                        onclick="return confirm('Delete this listing?')">
+
+                        <button class="delete-btn">
+                        Delete
+                        </button>
+
+                        </a>
+
+                        <?php
+                        }
+                        ?>
+
+                    </div>
+
                 </div>
 
             <?php
             }
             ?>
+
+        </div>
+
+        <h2>My Services</h2>
+
+<div class="listing-grid">
+
+        <?php
+        while($service = mysqli_fetch_assoc($serviceListingQuery)){
+        ?>
+
+        <div class="listing-card">
+
+            <img src="uploads/<?php echo $service['image']; ?>" alt="Service">
+
+            <div class="listing-info">
+
+                <h3><?php echo $service['name']; ?></h3>
+
+                <p>
+                    RM <?php echo number_format($service['price'],2); ?>
+                </p>
+
+            </div>
+
+            <div class="listing-actions">
+
+                <a href="editListingService.php?id=<?php echo $service['service_id']; ?>">
+
+                    <button class="edit-btn">
+                        Edit
+                    </button>
+
+                </a>
+
+                <a
+                href="deleteListingService.php?id=<?php echo $service['service_id']; ?>"
+                onclick="return confirm('Delete this service?')">
+
+                    <button class="delete-btn">
+                        Delete
+                    </button>
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <?php
+        }
+        ?>
 
         </div>
 
@@ -384,14 +673,17 @@ class="profile-img">
 <div class="listing-grid">
 
 <?php
-while($order = mysqli_fetch_assoc($sellerOrderQuery)){
+
+if(mysqli_num_rows($sellerOrderQuery) > 0){
+
+    while($order = mysqli_fetch_assoc($sellerOrderQuery)){
 ?>
 
 <div class="listing-card">
 
     <img
-        src="uploads/<?php echo $order['image']; ?>"
-        alt="Product">
+    src="uploads/<?php echo $order['image']; ?>"
+    alt="Product">
 
     <div class="listing-info">
 
@@ -409,15 +701,84 @@ while($order = mysqli_fetch_assoc($sellerOrderQuery)){
             <?php echo $order['payment_status']; ?>
         </p>
 
-        <a href="completeOrder.php?id=<?php echo $order['order_id']; ?>">
+        <?php
+        if(empty($order['delivery_proof'])){
+        ?>
+
+        <form
+        action="uploadProof.php"
+        method="POST"
+        enctype="multipart/form-data">
+
+            <input
+            type="hidden"
+            name="order_id"
+            value="<?php echo $order['order_id']; ?>">
+
+            <input
+            type="file"
+            name="delivery_proof"
+            required>
+
+            <button
+            type="submit"
+            class="upload-btn">
+
+                Upload Proof
+
+            </button>
+
+        </form>
+
+        <?php
+        }else{
+        ?>
+
+        <p class="proof-status">
+            ✅ Proof Uploaded
+        </p>
+
+        <a
+        href="uploads/proof/<?php echo $order['delivery_proof']; ?>"
+        target="_blank"
+        class="view-btn">
+
+            View Proof
+
+        </a>
+
+        <a
+        href="completeOrder.php?id=<?php echo $order['order_id']; ?>">
 
             <button class="complete-btn">
+
                 Mark As Completed
+
             </button>
 
         </a>
 
+        <?php
+        }
+        ?>
+
     </div>
+
+</div>
+
+<?php
+    }
+
+}else{
+?>
+
+<div class="no-order-card">
+
+    <h3>📦 No Orders To Complete</h3>
+
+    <p>
+        New customer orders will appear here.
+    </p>
 
 </div>
 
@@ -426,7 +787,6 @@ while($order = mysqli_fetch_assoc($sellerOrderQuery)){
 ?>
 
 </div>
-
     </div>
 
     <div id="insightsContent" class="tab-content">
@@ -454,9 +814,9 @@ while($order = mysqli_fetch_assoc($sellerOrderQuery)){
         </div>
 
         <div class="insight-card">
-            <span>📅</span>
-            <h3>Bookings</h3>
-            <p><?php echo $totalBookings; ?></p>
+            <span>📈</span>
+            <h3>Total Transaction</h3>
+            <p><?php echo $totalTransactions; ?></p>
         </div>
 
     </div>
@@ -569,27 +929,85 @@ if(mysqli_num_rows($purchaseQuery) > 0){
 
 ?>
 
-<div
-    class="purchase-card"
-    data-status="<?php echo strtolower(str_replace(' ','-',$order['payment_status'])); ?>">
+<div class="purchase-card"
 
-    <div class="purchase-info">
+data-status="<?php echo strtolower(str_replace(' ','-',$order['payment_status'])); ?>">
 
-        <h3>
-            Order #<?php echo $order['order_id']; ?>
-        </h3>
+<img
 
-        <p>
-            RM <?php echo number_format($order['total_amount'],2); ?>
+class="purchase-image"
+
+src="uploads/<?php echo $order['image']; ?>"
+
+alt="Product">
+
+<div class="purchase-info">
+
+<h3>
+
+<?php echo $order['name']; ?>
+
+</h3>
+
+<p>
+
+Seller :
+
+<?php echo $order['seller_name']; ?>
+
+</p>
+
+<p>
+
+RM <?php echo number_format($order['total_amount'],2); ?>
+
+</p>
+
+<p>
+
+<?php echo $order['order_date']; ?>
+
+</p>
+
+<span class="status">
+
+<?php echo $order['payment_status']; ?>
+
+</span>
+        <?php
+if($order['payment_status'] == "Completed"){
+?>
+
+    <?php
+    if($order['delivery_proof'] != ""){
+    ?>
+
+        <br><br>
+
+        <a
+        href="uploads/proof/<?php echo $order['delivery_proof']; ?>"
+        target="_blank"
+        class="view-proof-btn">
+
+            View Delivery Proof
+
+        </a>
+
+    <?php
+    }else{
+    ?>
+
+        <p class="waiting-proof">
+            Waiting for seller to upload delivery proof.
         </p>
 
-        <p>
-            <?php echo $order['order_date']; ?>
-        </p>
+    <?php
+    }
+    ?>
 
-        <span class="status">
-            <?php echo $order['payment_status']; ?>
-        </span>
+<?php
+}
+?>
 
     </div>
 
@@ -682,7 +1100,7 @@ mysqli_num_rows($checkReview);
 
 <?php
 if(
-    $booking['status'] == 'Completed' && $alreadyReviewed == 0
+    $booking['status'] == 'Completed' && $alreadyReviewed == 0 && $booking['provider_id'] != $_SESSION['user_id']
 ){
 ?>
 
@@ -690,7 +1108,20 @@ if(
    service_id=<?php echo $booking['service_id']; ?>
    &booking_id=<?php echo $booking['booking_id']; ?>">
 
-    <button class="review-btn">Leave Review</button>
+    <button class="review-btn">
+        Leave Review
+        <?php
+            if($reviewCount > 0){
+            ?>
+
+            <span class="notif-badge">
+                <?php echo $reviewCount; ?>
+            </span>
+
+            <?php
+            }
+        ?>
+    </button>
 </a>
 
 <?php

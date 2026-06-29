@@ -1,3 +1,44 @@
+console.log(availability);
+
+function getDisabledDays(){
+
+    switch(availability){
+
+        case "Weekend":
+            return [1,2,3,4,5];
+
+        case "Weekdays":
+        case "Monday - Friday":
+            return [0,6];
+
+        case "Monday":
+            return [0,2,3,4,5,6];
+
+        case "Tuesday":
+            return [0,1,3,4,5,6];
+
+        case "Wednesday":
+            return [0,1,2,4,5,6];
+
+        case "Thursday":
+            return [0,1,2,3,5,6];
+
+        case "Friday":
+            return [0,1,2,3,4,6];
+
+        case "Saturday":
+            return [0,1,2,3,4,5];
+
+        case "Sunday":
+            return [1,2,3,4,5,6];
+
+        default:
+            return [];
+
+    }
+
+}
+
 const slots =
 document.querySelectorAll(".slot-btn");
 
@@ -67,16 +108,6 @@ bookingForm.addEventListener("submit", (e) => {
 
 });
 
-const dateInput =
-document.querySelector(
-'input[name="booking_date"]'
-);
-
-dateInput.addEventListener(
-'change',
-loadBookedSlots
-);
-
 function loadBookedSlots(){
 
     const selectedDate =
@@ -144,3 +175,31 @@ function loadBookedSlots(){
     });
 
 }
+
+const dateInput = document.getElementById("bookingDate");
+
+flatpickr("#bookingDate",{
+
+    minDate:"today",
+
+    disable:[
+
+        function(date){
+
+            console.log(date.toDateString(), date.getDay());
+
+            return getDisabledDays().includes(date.getDay());
+
+        }
+
+    ],
+
+    dateFormat:"Y-m-d",
+
+    onChange:function(){
+
+        loadBookedSlots();
+
+    }
+
+});
