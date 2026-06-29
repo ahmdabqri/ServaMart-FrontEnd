@@ -1,5 +1,6 @@
 const loginForm = document.getElementById("login-formValidation");
 
+if(loginForm){
 loginForm.addEventListener("submit", function(event){
 
     const email = document.getElementById("email").value.trim();
@@ -19,9 +20,9 @@ loginForm.addEventListener("submit", function(event){
         isValid = false;
     }
 
-    // format email
-    else if(!email.includes("@")){
-        emailError.textContent = "Please enter a valid email";
+    // Check if it is the admin OR a valid UTeM student domain
+    else if(email !== "admin@gmail.com" && !email.toLowerCase().endsWith("@student.utem.edu.my")){
+        emailError.textContent = "Access denied. Use your UTeM Student or Admin email.";
         isValid = false;
     }
 
@@ -32,16 +33,17 @@ loginForm.addEventListener("submit", function(event){
     }
 
     // Minimum password
-    else if(password.length < 6){
-        passwordError.textContent = "Password must be at least 6 characters";
+    else if(password.length < 8){
+        passwordError.textContent = "Password must be at least 8 characters";
         isValid = false;
     }
 
-     if(!isValid){
+    if(!isValid){
         event.preventDefault();
     }
 
 });
+}
 
 const passwordInput = document.getElementById("password");
 const togglePassword = document.getElementById("togglePassword");

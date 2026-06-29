@@ -1,66 +1,63 @@
 <?php
-
 session_start();
-
 include 'config.php';
 
 if(isset($_POST['loginBtn'])){
 
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $sql =
-    "SELECT * FROM userr
-    WHERE email='$email'
-    AND password='$password'";
+    $cleanEmail = strtolower($email);
+    $allowedDomain = "@student.utem.edu.my";
 
-    $result =
-    mysqli_query($conn,$sql);
+    $isAdmin = ($cleanEmail === "admin@gmail.com");
+    $isStudent = (substr($cleanEmail, -strlen($allowedDomain)) === $allowedDomain);
 
-    if(mysqli_num_rows($result) > 0){
-
-        $user =
-        mysqli_fetch_assoc($result);
-
-        $_SESSION['user_id'] =
-        $user['user_id'];
-
-        $_SESSION['name'] =
-        $user['name'];
-
-        $_SESSION['role'] =
-        $user['role'];
-
-        if($user['role'] == 'admin'){
-
-            header(
-            "Location: adminDashboard.php"
-            );
-
-        }
-        else{
-
-            header(
-            "Location: homepage.php"
-            );
-
-        }
-
-        exit();
-
-    }
-    else{
-
+    if (!$isAdmin && !$isStudent) {
         echo "
         <script>
-        alert('Invalid Email or Password');
+            alert('Unauthorized email domain.');
+            window.history.back();
         </script>
         ";
-
+        exit();
     }
 
-}
+    $sql = "SELECT * FROM userr WHERE email='$email'";
+    $result = mysqli_query($conn, $sql);
 
+    if(mysqli_num_rows($result) > 0){
+        $user = mysqli_fetch_assoc($result);
+
+        if(password_verify($password, $user['password'])){
+
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['role'] = $user['role'];
+
+            if($user['role'] == 'admin'){
+                header("Location: adminDashboard.php");
+            } else {
+                header("Location: homepage.php");
+            }
+            exit();
+
+        } else {
+            echo "
+            <script>
+                alert('Invalid Email or Password');
+            </script>
+            ";
+        }
+
+    } else {
+        echo "
+        <script>
+            alert('Invalid Email or Password');
+        </script>
+        ";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +97,7 @@ if(isset($_POST['loginBtn'])){
     </p>
 
     <form class="login-form" id="login-formValidation" action="login.php"
-      method="POST">
+      method="POST" novalidate>
 
         <div class="form-group">
             <label for="email">Email</label>
