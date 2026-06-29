@@ -139,3 +139,55 @@
     color:#721c24;
 
 }
+
+.view-proof-btn{
+
+    display:inline-block;
+    margin-top:15px;
+    padding:10px 18px;
+    background:#2563eb;
+    color:white;
+    border-radius:8px;
+    text-decoration:none;
+    font-weight:600;
+    transition:.3s;
+
+}
+
+.view-proof-btn:hover{
+
+    background:#1d4ed8;
+
+}
+
+.waiting-proof{
+
+    margin-top:15px;
+    color:#888;
+    font-size:14px;
+
+}
+
+.purchase-card{
+
+display:flex;
+align-items:center;
+gap:20px;
+
+}
+
+.purchase-image{
+
+width:120px;
+height:120px;
+border-radius:12px;
+object-fit:cover;
+flex-shrink:0;
+
+}
+
+.purchase-info{
+
+flex:1;
+
+}

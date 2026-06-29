@@ -2,6 +2,7 @@
 
 session_start();
 include 'config.php';
+include "navbarNotification.php";
 
 $user_id = $_SESSION['user_id'];
 
@@ -43,9 +44,29 @@ $user = mysqli_fetch_assoc($userQuery);
     <div class="nav-menu">
         <a href="sell.php"><button class="sell-button">SELL</button></a>
 
-        <a href="userProfile.php">
+ <a href="userProfile.php">
+
+            <div class="profile-icon">
+
             <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
+        
+
+            <?php
+            if($totalNotification > 0){
+            ?>
+
+                <span class="profile-badge">
+                    <?php echo $totalNotification; ?>
+                </span>
+
+            <?php
+            }
+            ?>
+
+        </div>
+
+        <span>Profile</span>
+
         </a>
 
         <a href="cart.php">
@@ -53,15 +74,6 @@ $user = mysqli_fetch_assoc($userQuery);
             <span>Cart</span>
         </a>
 
-        <a href="chat.php">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
-
-        <a href="bookings.php">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>

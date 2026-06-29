@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'config.php';
+include "navbarNotification.php";
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
@@ -47,6 +48,48 @@ usort($items, function($a, $b){
          - strtotime($a['created_at']);
 });
 
+$productSpotlightQuery = mysqli_query(
+
+$conn,
+
+"SELECT *
+
+FROM preloved_product
+
+ORDER BY preloved_id DESC
+
+LIMIT 1"
+
+);
+
+$productSpotlight =
+mysqli_fetch_assoc($productSpotlightQuery);
+
+$serviceSpotlightQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+service_product.*,
+COUNT(booking_order.booking_id) AS total_booking
+
+FROM service_product
+
+LEFT JOIN booking_order
+ON service_product.service_id =
+booking_order.service_id
+
+GROUP BY service_product.service_id
+
+ORDER BY total_booking DESC
+
+LIMIT 1"
+
+);
+
+$serviceSpotlight =
+mysqli_fetch_assoc($serviceSpotlightQuery);
+
 ?>
 
 <!DOCTYPE html>
@@ -82,24 +125,34 @@ usort($items, function($a, $b){
         <a href="sell.php"><button class="sell-button">SELL</button></a>
 
         <a href="userProfile.php">
-            <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
-        </a>
+
+        <div class="profile-icon">
+
+        <img src="image/profile-round-1342-svgrepo-com.svg">
+
+        <?php
+        if($totalNotification > 0){
+        ?>
+
+            <span class="profile-badge">
+                <?php echo $totalNotification; ?>
+            </span>
+
+        <?php
+        }
+        ?>
+
+    </div>
+
+    <span>Profile</span>
+
+</a>
 
         <a href="cart.php">
             <img src="image/cart-shopping-svgrepo-com.svg">
             <span>Cart</span>
         </a>
 
-        <a href="chat.php">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
-
-        <a href="bookings.php">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>
@@ -112,25 +165,59 @@ usort($items, function($a, $b){
 
         <section class="spotlight-section">
 
-            <div class="spotlight-card">
-                <div class="spotlight-image"><img src="image/product 1.jpg" alt="Spotlight Product"></div>
+        <a href="product-detail.php?id=<?php echo $productSpotlight['preloved_id']; ?>">
 
-                <div class="spotlight-info">
-                    <h2>Gaming Mouse</h2>
-                    <p>Best Seller Product</p>
-                </div>
-            </div>
+        <div class="spotlight-card">
 
-            <div class="spotlight-card">
-                <div class="spotlight-image"><img src="image/service 1.jpg" alt="Spotlight Service"></div>
+        <div class="spotlight-image">
 
-                <div class="spotlight-info">
-                    <h2>Tutor Programming</h2>
-                    <p>Popular Service</p>
-                </div>
-            </div>
+            <img src="uploads/<?php echo $productSpotlight['image']; ?>">
 
-        </section>
+        </div>
+
+        <div class="spotlight-info">
+
+            <h2>
+                <?php echo $productSpotlight['name']; ?>
+            </h2>
+
+            <p>
+                Recently Added
+            </p>
+
+        </div>
+
+    </div>
+
+        </a>
+
+
+    <a href="service-detail.php?id=<?php echo $serviceSpotlight['service_id']; ?>">
+    <div class="spotlight-card">
+
+        <div class="spotlight-image">
+
+            <img src="uploads/<?php echo $serviceSpotlight['image']; ?>">
+        </div>
+
+        <div class="spotlight-info">
+
+            <h2>
+                <?php echo $serviceSpotlight['name']; ?>
+            </h2>
+
+            <p>
+                Most Booked Service
+                <?php echo $serviceSpotlight['total_booking']; ?>
+                Bookings
+            </p>
+
+        </div>
+
+    </div>
+    </a>
+
+</section>
 
         <!--Category Section-->
         <section class="category-section">

@@ -2,6 +2,7 @@
 
 session_start();
 include 'config.php';
+include "navbarNotification.php";
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
@@ -55,9 +56,29 @@ $product = mysqli_fetch_assoc($query);
     <div class="nav-menu">
         <button class="sell-button">SELL</button>
 
-        <a href="userProfile.php">
+ <a href="userProfile.php">
+
+            <div class="profile-icon">
+
             <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
+        
+
+            <?php
+            if($totalNotification > 0){
+            ?>
+
+                <span class="profile-badge">
+                    <?php echo $totalNotification; ?>
+                </span>
+
+            <?php
+            }
+            ?>
+
+        </div>
+
+        <span>Profile</span>
+
         </a>
 
         <a href="cart.php">
@@ -65,15 +86,7 @@ $product = mysqli_fetch_assoc($query);
             <span>Cart</span>
         </a>
 
-        <a href="chat.php">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
 
-        <a href="bookings.php">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>
@@ -119,10 +132,6 @@ $product = mysqli_fetch_assoc($query);
         <a href="add-cart.php?id=<?php echo $product['preloved_id']; ?>"><button class="cart-btn">
             Add To Cart
         </button></a>
-
-        <button class="contact-btn">
-        Contact Seller
-        </button>
 
         </div>
 

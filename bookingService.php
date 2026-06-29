@@ -68,6 +68,7 @@ $provider = mysqli_fetch_assoc($userQuery);
     <link rel="stylesheet" href="footer.css">
     <link rel="stylesheet" href="theme.css">
     <link rel="stylesheet" href="bookingService.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
 
     <title> Bookings Page ServaMart</title>
@@ -85,9 +86,29 @@ $provider = mysqli_fetch_assoc($userQuery);
     <div class="nav-menu">
         <a href="sell.php"><button class="sell-button">SELL</button></a>
 
-        <a href="userProfile.php">
+ <a href="userProfile.php">
+
+            <div class="profile-icon">
+
             <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
+        
+
+            <?php
+            if($totalNotification > 0){
+            ?>
+
+                <span class="profile-badge">
+                    <?php echo $totalNotification; ?>
+                </span>
+
+            <?php
+            }
+            ?>
+
+        </div>
+
+        <span>Profile</span>
+
         </a>
 
         <a href="cart.php">
@@ -95,15 +116,7 @@ $provider = mysqli_fetch_assoc($userQuery);
             <span>Cart</span>
         </a>
 
-        <a href="chat.php">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
 
-        <a href="bookings.php">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>
@@ -162,7 +175,7 @@ $provider = mysqli_fetch_assoc($userQuery);
 
         <div class="form-group">
             <label>Select Date</label>
-            <input type="date" id="bookingDate" name="booking_date" required>
+            <input type="date" id="bookingDate" name="booking_date" required placeholder="Please Select Date">
             <input type="hidden" name="booking_time" id="bookingTime">
             <small id="dateError" class="error"></small>
         </div>
@@ -215,8 +228,12 @@ $provider = mysqli_fetch_assoc($userQuery);
 const serviceId =
 <?php echo $service['service_id']; ?>;
 
+const availability =
+"<?php echo $service['availability']; ?>";
+
 </script>
  
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="bookingService.js"></script>
 </body>
 
