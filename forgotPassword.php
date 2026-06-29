@@ -43,12 +43,12 @@ if (isset($_POST['resetBtn'])) {
         $step = 'resetPassword';
         $formMessage = "Please fill in both password fields.";
 
-    } elseif ($password !== $confirmPassword) {
+    } else if ($password !== $confirmPassword) {
 
         $step = 'resetPassword';
         $formMessage = "Passwords do not match.";
 
-    } elseif (strlen($password) < 8) {
+    } else if (strlen($password) < 8) {
 
         $step = 'resetPassword';
         $formMessage = "Password must be at least 8 characters.";
@@ -68,8 +68,11 @@ if (isset($_POST['resetBtn'])) {
 
         } else {
 
+            // HASH THE NEW PASSWORD BEFORE STORING
+            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
             $update = mysqli_prepare($conn, "UPDATE userr SET password = ? WHERE email = ?");
-            mysqli_stmt_bind_param($update, "ss", $password, $email);
+            mysqli_stmt_bind_param($update, "ss", $hashedPassword, $email);
 
             if (mysqli_stmt_execute($update)) {
 

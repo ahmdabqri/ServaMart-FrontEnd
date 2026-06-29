@@ -108,7 +108,6 @@ while($row = mysqli_fetch_assoc($productQuery)){
                     <option value="latest">Latest</option>
                     <option value="low-high">Price: Low to High</option>
                     <option value="high-low">Price: High to Low</option>
-                    <option value="condition">Condition</option>
                 </select>
 
             </div>
