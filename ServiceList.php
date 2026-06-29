@@ -107,8 +107,6 @@ while($row = mysqli_fetch_assoc($serviceQuery)){
                     <option value="latest">Latest</option>
                     <option value="low-high">Price: Low to High</option>
                     <option value="high-low">Price: High to Low</option>
-                    <option value="category">Category</option>
-                    <option value="rating">Rating</option>
                 </select>
 
             </div>
