@@ -34,7 +34,11 @@ $user = mysqli_fetch_assoc($userQuery);
 </head>
 <header>
 <nav class = "navbar">
-    <div class = "logo">ServaMart</div>
+    <div class = "logo">
+        <a href="homepage.php">
+            <img src="image/logo.png" alt="ServaMart Logo">
+        </a>
+    </div>
 
     <div class="search-container">
         <img src="image/search.svg.svg" alt="Search" class="search-icon">

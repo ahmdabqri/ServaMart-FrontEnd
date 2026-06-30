@@ -27,6 +27,12 @@
     background: #fff;
 }
 
+.logo img{
+    height: 70px;
+    width: auto;
+    display: block;
+}
+
 .search-container{
     width: 350px;
     padding: 10px 15px;
