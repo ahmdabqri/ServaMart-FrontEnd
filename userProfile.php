@@ -493,6 +493,11 @@ class="profile-img">
         <button class="edit-profile-btn">Edit Profile</button>
         </a>
 
+        <a href="login.php">
+        <button class="logout-btn">Logout</button>
+        </a>
+
+
     </div>
 
     <div class="profile-tabs">
@@ -558,6 +563,7 @@ class="profile-img">
         <div class="listing-grid">
 
             <?php
+            if(mysqli_num_rows($listingQuery) > 0){
             while($product = mysqli_fetch_assoc($listingQuery)){
             ?>
 
@@ -611,15 +617,25 @@ class="profile-img">
 
             <?php
             }
+
+            }else{
             ?>
+            <div class="empty-state">
+                    <h3>📦 No Products Yet</h3>
+
+                    <p>You haven't listed any products yet.</p>
+            </div>
+            <?php } ?>
 
         </div>
 
+        <br><br>
         <h2>My Services</h2>
 
 <div class="listing-grid">
 
         <?php
+        if(mysqli_num_rows($serviceListingQuery) > 0){
         while($service = mysqli_fetch_assoc($serviceListingQuery)){
         ?>
 
@@ -663,7 +679,15 @@ class="profile-img">
 
         <?php
         }
+
+        }else{
         ?>
+        <div class="empty-state">
+                    <h3>📦 No Service Yet</h3>
+
+                    <p>You haven't listed any service yet.</p>
+            </div>
+            <?php } ?>
 
         </div>
 
@@ -831,6 +855,7 @@ if(mysqli_num_rows($sellerOrderQuery) > 0){
         <div class="review-list">
 
 <?php
+if(mysqli_num_rows($reviewQuery) > 0){
 while($review = mysqli_fetch_assoc($reviewQuery)){
 ?>
 
@@ -888,42 +913,48 @@ while($review = mysqli_fetch_assoc($reviewQuery)){
 
 <?php
 }
+}else{
 ?>
+    <div class="empty-state">
+            <h3>⭐ No Review Yet</h3>
+
+            <p>Reviews from customers will appear here.</p>
+    </div>
+    <?php } ?>
 
 </div>
     </div>
 
     <div id="purchasesContent" class="tab-content">
         <h2>Purchases</h2>
-         <div class="purchase-status">
 
-         <button class="purchase-btn active-purchase" data-status="all">
-    All
-</button>
+        <div class="purchase-status">
 
-        <button class="purchase-btn" data-status="pending-verification">
-    Pending Verification
-</button>
+            <button class="purchase-btn active-purchase" data-status="all">
+            All
+            </button>
 
-<button class="purchase-btn" data-status="in-progress">
-    In Progress
-</button>
+            <button class="purchase-btn" data-status="pending-verification">
+            Pending Verification
+            </button>
 
-<button class="purchase-btn" data-status="waiting-buyer-confirmation">
+            <button class="purchase-btn" data-status="in-progress">
+            In Progress
+            </button>
 
-Waiting Confirmation
+            <button class="purchase-btn" data-status="waiting-buyer-confirmation">
+            Waiting Confirmation
+            </button>
 
-</button>
+            <button class="purchase-btn" data-status="completed">
+            Completed
+            </button>
 
-<button class="purchase-btn" data-status="completed">
-    Completed
-</button>
+            <button class="purchase-btn" data-status="cancelled">
+            Cancelled
+            </button>
 
-<button class="purchase-btn" data-status="cancelled">
-    Cancelled
-</button>
-
-    </div>
+        </div>
 
     <div class="purchase-list">
 
@@ -1335,11 +1366,6 @@ if($incoming['status'] == 'Pending'){
 <footer class="footer">
     <div class="footer-left">
         <p>&#169 2026 UTeM ServaMart </p>
-    </div>
-    <div class="footer-right">
-        <a href="#">Help Centre</a>
-        <span>|</span>
-        <a href="#">Contact Us</a>
     </div>
     
 </footer>

@@ -56,6 +56,23 @@
     transition:0.3s;
 }
 
+.logout-Admin{
+    padding:10px 20px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#e5e5e5;
+
+    cursor:pointer;
+}
+
+.logout-Admin:hover{
+    background:red;
+    color:white;
+    transition:0.3s;
+}
+
 .delete-btn:hover{
     opacity:0.8;
 }
@@ -326,5 +343,39 @@
 .view-btn:hover{
 
     background:#1d4ed8;
+
+}
+
+.activate-btn{
+
+    background:green;
+    color:white;
+
+    border:none;
+
+    padding:8px 12px;
+    border-radius:8px;
+
+    cursor:pointer;
+}
+
+.action-cell{
+    text-align: center;
+    width: 90px;
+}
+
+.inactive-status{
+
+    display:inline-block;
+
+    background:#fee2e2;
+    color:#b91c1c;
+
+    padding:10px 14px;
+
+    border-radius:999px;
+
+    font-size:14px;
+    font-weight:500;
 
 }

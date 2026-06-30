@@ -27,10 +27,25 @@ if(isset($_POST['loginBtn'])){
     $result = mysqli_query($conn, $sql);
 
     if(mysqli_num_rows($result) > 0){
+
         $user = mysqli_fetch_assoc($result);
 
         if(password_verify($password, $user['password'])){
 
+             // CHECK STATUS DULU
+            if($user['status'] == "Inactive"){
+
+            echo "
+            <script>
+                alert('Your account has been deactivated. Please contact the administrator.');
+                window.location='login.php';
+            </script>
+            ";
+            exit();
+
+        }
+
+            //create session
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['name'] = $user['name'];
             $_SESSION['role'] = $user['role'];
