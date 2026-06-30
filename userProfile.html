@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="userProfile.css">
+    <link rel="stylesheet" href="userProfile(insights).css">
+    <link rel="stylesheet" href="userProfile(reviews).css">
+    <link rel="stylesheet" href="userProfile(purchases).css">
+    <link rel="stylesheet" href="userProfile(bookings).css">
+
+
+    
+
+    <title>User Profile Page ServaMart</title>
+</head>
+
+<header>
+<nav class = "navbar">
+    <div class = "logo">ServaMart</div>
+
+    <div class="search-container">
+        <img src="image/search.svg.svg" alt="Search" class="search-icon">
+        <input type="text" id="search-input" placeholder="Search">
+    </div>
+
+    <div class="nav-menu">
+        <a href="sell.html"><button class="sell-button">SELL</button></a>
+
+        <a href="#">
+            <img src="image/profile-round-1342-svgrepo-com.svg">
+            <span>Profile</span>
+        </a>
+
+        <a href="cart.html">
+            <img src="image/cart-shopping-svgrepo-com.svg">
+            <span>Cart</span>
+        </a>
+
+        <a href="#">
+            <img src="image/message-circle-chat-svgrepo-com.svg">
+            <span>Message</span>
+        </a>
+
+        <a href="#">
+            <img src="image/calendar-days-svgrepo-com.svg">
+            <span>Booking</span>
+        </a>
+    </div>
+
+</nav>
+</header>
+<body>
+      
+    <section class="profile-container">
+
+    <div class="profile-card">
+
+        <div class="profile-left">
+
+            <img src="image/user-svgrepo-com.svg"
+                 alt="Profile Picture"
+                 class="profile-image">
+
+        </div>
+
+        <div class="profile-info">
+
+            <h2>Abqari</h2>
+
+            <p>d032410278@student.utem.edu.my</p>
+
+            <p>012-3456789</p>
+
+            <div class="profile-stats">
+
+                <span>⭐ 4.8 Rating</span>
+                <span>25 Reviews</span>
+
+            </div>
+
+        </div>
+
+        <button class="edit-profile-btn">
+            Edit Profile
+        </button>
+
+    </div>
+
+    <div class="profile-tabs">
+
+        <button id="listingsTab" class="tab-btn active">
+            Listings
+        </button>
+
+        <button id="insightsTab" class="tab-btn">
+            Insights
+        </button>
+
+        <button id="reviewsTab" class="tab-btn">
+            Reviews
+        </button>
+
+        <button id="purchasesTab" class="tab-btn">
+            Purchases
+        </button>
+
+        <button id="bookingsTab" class="tab-btn">
+            Bookings
+        </button>
+
+    </div>
+
+   <div class="profile-content">
+
+    <div id="listingsContent"
+         class="tab-content active-content">
+
+        <h2>My Listings</h2>
+
+        <div class="listing-grid">
+
+            <div class="listing-card">
+                Product 1
+            </div>
+
+            <div class="listing-card">
+                Product 2
+            </div>
+
+            <div class="listing-card">
+                Product 3
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="insightsContent" class="tab-content">
+
+        <h2>Insights</h2>
+
+         <div class="insight-grid">
+
+        <div class="insight-card">
+            <span>📦</span>
+            <h3>Total Listings</h3>
+            <p>12</p>
+        </div>
+
+        <div class="insight-card">
+            <span>💰</span>
+            <h3>Total Sales</h3>
+            <p>8</p>
+        </div>
+
+        <div class="insight-card">
+            <span>🛒</span>
+            <h3>Revenue</h3>
+            <p>RM1250</p>
+        </div>
+
+        <div class="insight-card">
+            <span>📅</span>
+            <h3>Bookings</h3>
+            <p>5</p>
+        </div>
+
+    </div>
+
+
+    </div>
+
+    <div id="reviewsContent" class="tab-content">
+
+        <h2>Reviews</h2>
+
+        <div class="review-list">
+
+        <div class="review-card">
+
+        <div class="review-header">
+
+            <h3>Ahmad</h3>
+
+            <span class="review-rating">
+                ⭐⭐⭐⭐⭐
+            </span>
+
+        </div>
+
+        <p class="review-comment">
+            Fast response and trusted seller.
+            Item received in excellent condition.
+        </p>
+
+        <small>10 June 2026</small>
+
+    </div>
+
+     <div class="review-card">
+
+        <div class="review-header">
+
+            <h3>Ali</h3>
+
+            <span class="review-rating">
+                ⭐⭐⭐⭐
+            </span>
+
+        </div>
+
+        <p class="review-comment">
+            Good service and easy to deal with.
+        </p>
+
+        <small>5 June 2026</small>
+
+    </div>
+
+    <div class="review-card">
+
+        <div class="review-header">
+
+            <h3>Siti</h3>
+
+            <span class="review-rating">
+                ⭐⭐⭐⭐⭐
+            </span>
+
+        </div>
+
+        <p class="review-comment">
+            Highly recommended seller.
+        </p>
+
+        <small>1 June 2026</small>
+
+    </div>
+    </div>
+    </div>
+
+    <div id="purchasesContent" class="tab-content">
+        <h2>Purchases</h2>
+         <div class="purchase-status">
+
+        <button class="purchase-btn active-purchase" data-status="all">
+            All
+        </button>
+
+        <button class="purchase-btn" data-status="topay">
+            To Pay
+        </button>
+
+        <button class="purchase-btn" data-status="progress">
+            In Progress
+        </button>
+
+        <button class="purchase-btn" data-status="completed">
+            Completed
+        </button>
+
+        <button class="purchase-btn" data-status="cancelled">
+            Cancelled
+        </button>
+
+    </div>
+
+    <div class="purchase-list">
+
+        <div class="purchase-card" data-status="completed">
+
+            <img src="image/product 3.jpg"
+                 alt="Product">
+
+            <div class="purchase-info">
+
+                <h3>Desporte Futsal Shoes</h3>
+
+                <p>RM300.00</p>
+
+                <span class="status completed">
+                    Completed
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="purchase-card" data-status="progress">
+
+            <img src="image/product 4.jpg"
+                 alt="Product">
+
+            <div class="purchase-info">
+
+                <h3>Gaming Mouse</h3>
+
+                <p>RM50.00</p>
+
+                <span class="status progress">
+                    In Progress
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+    <div id="bookingsContent" class="tab-content">
+
+        <h2>Bookings</h2>
+
+        <table class="booking-table">
+
+        <thead>
+
+            <tr>
+                <th>Service</th>
+                <th>Booking ID</th>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            <tr>
+                <td>Aircond Cleaning</td>
+                <td>BK001</td>
+                <td>20 June 2026</td>
+                <td>
+                    <span class="status confirmed">
+                        Confirmed
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Laptop Repair</td>
+                <td>BK002</td>
+                <td>25 June 2026</td>
+                <td>
+                    <span class="status completed">
+                        Completed
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>House Cleaning</td>
+                <td>BK003</td>
+                <td>30 June 2026</td>
+                <td>
+                    <span class="status pending">
+                        Pending
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Laundry</td>
+                <td>BK023</td>
+                <td>20 June 2026</td>
+                <td>
+                    <span class="status cancelled">
+                        Cancelled
+                    </span>
+                </td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    </div>
+
+</div>
+
+</section>
+  
+<script src="userProfile.js"></script>
+</body>
+
+<footer class="footer">
+    <div class="footer-left">
+        <p>&#169 2026 UTeM ServaMart </p>
+    </div>
+    <div class="footer-right">
+        <a href="#">Help Centre</a>
+        <span>|</span>
+        <a href="#">Contact Us</a>
+    </div>
+    
+</footer>
+</html>
