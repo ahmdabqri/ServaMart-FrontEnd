@@ -118,7 +118,7 @@ mysqli_fetch_assoc($serviceSpotlightQuery);
 <nav class = "navbar">
     <div class = "logo">
         <a href="homepage.php">
-            <img src="image/logo.png" alt="ServaMart Logo">
+            <img class="logo-img" src="image/logo.png" alt="ServaMart Logo">
         </a>
     </div>
 
