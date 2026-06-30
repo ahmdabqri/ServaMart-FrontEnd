@@ -16,8 +16,10 @@ $items = [];
 /* PRELOVED */
 $productQuery = mysqli_query(
     $conn,
-    "SELECT * FROM preloved_product
-    ORDER BY created_at DESC"
+    "SELECT *
+     FROM preloved_product
+     WHERE listing_status='Active'
+     ORDER BY created_at DESC"
 );
 
 while($row = mysqli_fetch_assoc($productQuery)){
@@ -30,9 +32,11 @@ while($row = mysqli_fetch_assoc($productQuery)){
 /* SERVICE */
 $serviceQuery = mysqli_query(
     $conn,
-    "SELECT * FROM service_product
-WHERE status='Available'
-ORDER BY created_at DESC"
+    "SELECT *
+     FROM service_product
+     WHERE status='Available'
+     AND listing_status='Active'
+     ORDER BY created_at DESC"
 );
 
 while($row = mysqli_fetch_assoc($serviceQuery)){
@@ -52,11 +56,9 @@ $productSpotlightQuery = mysqli_query(
 $conn,
 
 "SELECT *
-
 FROM preloved_product
-
+WHERE listing_status='Active'
 ORDER BY preloved_id DESC
-
 LIMIT 1"
 
 );
@@ -75,9 +77,10 @@ COUNT(booking_order.booking_id) AS total_booking
 FROM service_product
 
 LEFT JOIN booking_order
-ON service_product.service_id =
-booking_order.service_id
+ON service_product.service_id = booking_order.service_id
 
+WHERE service_product.status='Available'
+AND service_product.listing_status='Active'
 GROUP BY service_product.service_id
 
 ORDER BY total_booking DESC
@@ -312,11 +315,6 @@ else{
 <footer class="footer">
     <div class="footer-left">
         <p>&#169 2026 UTeM ServaMart </p>
-    </div>
-    <div class="footer-right">
-        <a href="#">Help Centre</a>
-        <span>|</span>
-        <a href="#">Contact Us</a>
     </div>
     
 </footer>

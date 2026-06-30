@@ -67,6 +67,11 @@
     color:white;
 
     cursor:pointer;
+    transition: 0.3s;
+}
+
+.edit-profile-btn:hover{
+    transform:translateY(-5px);
 }
 
 .profile-tabs{
@@ -395,4 +400,21 @@
 
     font-weight:500;
 
+}
+
+.logout-btn{
+    padding:12px 20px;
+
+    border:none;
+    border-radius:10px;
+
+    background:red;
+    color:white;
+
+    cursor:pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover{
+     transform:translateY(-5px);
 }

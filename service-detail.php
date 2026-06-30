@@ -147,11 +147,6 @@ $service = mysqli_fetch_assoc($query);
     <div class="footer-left">
         <p>&#169 2026 UTeM ServaMart </p>
     </div>
-    <div class="footer-right">
-        <a href="#">Help Centre</a>
-        <span>|</span>
-        <a href="#">Contact Us</a>
-    </div>
     
 </footer>
 </html>

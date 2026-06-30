@@ -189,6 +189,11 @@ ORDER BY booking_order.booking_date DESC"
                 Reports
             </button>
 
+            <a href="login.php">
+            <button class="logout-Admin">
+                Logout
+            </button></a>
+
         </div>
 
         <div id="userContent"
@@ -228,35 +233,64 @@ while($user = mysqli_fetch_assoc($userQuery)){
 
     <td>
 
-        <span class="status active-status">
-
-            <?php echo ucfirst($user['role']); ?>
-
-        </span>
-
-    </td>
-
-    <td>
-
         <?php
-        if($user['role'] != 'admin'){
+        if($user['status'] == "Active"){
         ?>
 
-        <a href="deleteUser.php?id=<?php echo $user['user_id']; ?>">
+        <span class="status active-status">
+            Active
+        </span>
 
-            <button class="delete-btn">
+        <?php
+        }else{
+        ?>
 
-                Delete
-
-            </button>
-
-        </a>
+        <span class="status inactive-status">
+            Inactive
+        </span>
 
         <?php
         }
         ?>
 
     </td>
+
+    <td class="action-cell">
+
+<?php
+if($user['role'] != "admin"){
+
+    if($user['status'] == "Active"){
+?>
+
+<a href="deactivateUser.php?id=<?php echo $user['user_id']; ?>"
+onclick="return confirm('Deactivate this user?')">
+
+    <button class="delete-btn">
+        Deactivate
+    </button>
+
+</a>
+
+<?php
+    }else{
+?>
+
+<a href="activateUser.php?id=<?php echo $user['user_id']; ?>"
+onclick="return confirm('Activate this user?')">
+
+    <button class="activate-btn">
+        Activate
+    </button>
+
+</a>
+
+<?php
+    }
+}
+?>
+
+</td>
 
 </tr>
 
@@ -290,7 +324,9 @@ while($user = mysqli_fetch_assoc($userQuery)){
             <th>Product Name</th>
             <th>Price</th>
             <th>Seller</th>
+            <th>Listing Status</th>
             <th>Action</th>
+            
         </tr>
 
         <?php while($product = mysqli_fetch_assoc($productQuery)){ ?>
@@ -315,17 +351,61 @@ while($user = mysqli_fetch_assoc($userQuery)){
 
             <td>
 
-                <a
-                href="deleteProduct.php?id=<?php echo $product['preloved_id']; ?>"
-                onclick="return confirm('Delete this product?')">
+<?php
+if($product['listing_status'] == "Active"){
+?>
 
-                    <button class="delete-btn">
-                        Delete
-                    </button>
+<span class="status active-status">
+    Active
+</span>
 
-                </a>
+<?php
+}else{
+?>
 
-            </td>
+<span class="status inactive-status">
+    Inactive
+</span>
+
+<?php
+}
+?>
+
+</td>
+
+<td class="action-cell">
+
+<?php
+if($product['listing_status'] == "Active"){
+?>
+
+<a href="deactivateProduct.php?id=<?php echo $product['preloved_id']; ?>"
+onclick="return confirm('Deactivate this product?')">
+
+    <button class="delete-btn">
+        Deactivate
+    </button>
+
+</a>
+
+<?php
+}else{
+?>
+
+<a href="activateProduct.php?id=<?php echo $product['preloved_id']; ?>"
+onclick="return confirm('Activate this product?')">
+
+    <button class="activate-btn">
+        Activate
+    </button>
+
+</a>
+
+<?php
+}
+?>
+
+</td>
 
         </tr>
 
@@ -360,6 +440,7 @@ while($user = mysqli_fetch_assoc($userQuery)){
             <th>Provider</th>
             <th>Price</th>
             <th>Status</th>
+            <th>Listing Status</th>
             <th>Action</th>
         </tr>
 
@@ -391,17 +472,61 @@ while($service = mysqli_fetch_assoc($serviceQuery)){
 
     <td>
 
-        <a
-        href="deleteService.php?id=<?php echo $service['service_id']; ?>"
-        onclick="return confirm('Delete this service?')">
+<?php
+if($service['listing_status'] == "Active"){
+?>
 
-            <button class="delete-btn">
-                Delete
-            </button>
+<span class="status active-status">
+    Active
+</span>
 
-        </a>
+<?php
+}else{
+?>
 
-    </td>
+<span class="status inactive-status">
+    Inactive
+</span>
+
+<?php
+}
+?>
+
+</td>
+
+    <td class="action-cell">
+
+<?php
+if($service['listing_status'] == "Active"){
+?>
+
+<a href="deactivateService.php?id=<?php echo $service['service_id']; ?>"
+onclick="return confirm('Deactivate this service?')">
+
+    <button class="delete-btn">
+        Deactivate
+    </button>
+
+</a>
+
+<?php
+}else{
+?>
+
+<a href="activateService.php?id=<?php echo $service['service_id']; ?>"
+onclick="return confirm('Activate this service?')">
+
+    <button class="activate-btn">
+        Activate
+    </button>
+
+</a>
+
+<?php
+}
+?>
+
+</td>
 
 </tr>
 
