@@ -1,3 +1,99 @@
+<?php
+session_start();
+include 'config.php';
+include "navbarNotification.php";
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+?>
+
+<?php
+
+$items = [];
+
+/* PRELOVED */
+$productQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM preloved_product
+     WHERE listing_status='Active'
+     ORDER BY created_at DESC"
+);
+
+while($row = mysqli_fetch_assoc($productQuery)){
+
+    $row['type'] = 'product';
+
+    $items[] = $row;
+}
+
+/* SERVICE */
+$serviceQuery = mysqli_query(
+    $conn,
+    "SELECT *
+     FROM service_product
+     WHERE status='Available'
+     AND listing_status='Active'
+     ORDER BY created_at DESC"
+);
+
+while($row = mysqli_fetch_assoc($serviceQuery)){
+
+    $row['type'] = 'service';
+
+    $items[] = $row;
+}
+
+usort($items, function($a, $b){
+    return strtotime($b['created_at'])
+         - strtotime($a['created_at']);
+});
+
+$productSpotlightQuery = mysqli_query(
+
+$conn,
+
+"SELECT *
+FROM preloved_product
+WHERE listing_status='Active'
+ORDER BY preloved_id DESC
+LIMIT 1"
+
+);
+
+$productSpotlight =
+mysqli_fetch_assoc($productSpotlightQuery);
+
+$serviceSpotlightQuery = mysqli_query(
+
+$conn,
+
+"SELECT
+service_product.*,
+COUNT(booking_order.booking_id) AS total_booking
+
+FROM service_product
+
+LEFT JOIN booking_order
+ON service_product.service_id = booking_order.service_id
+
+WHERE service_product.status='Available'
+AND service_product.listing_status='Active'
+GROUP BY service_product.service_id
+
+ORDER BY total_booking DESC
+
+LIMIT 1"
+
+);
+
+$serviceSpotlight =
+mysqli_fetch_assoc($serviceSpotlightQuery);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +116,11 @@
 
 <header>
 <nav class = "navbar">
-    <div class = "logo">ServaMart</div>
+    <div class = "logo">
+        <a href="homepage.php">
+            <img class="logo-img" src="image/logo.png" alt="ServaMart Logo">
+        </a>
+    </div>
 
     <div class="search-container">
         <img src="image/search.svg.svg" alt="Search" class="search-icon">
@@ -28,27 +128,37 @@
     </div>
 
     <div class="nav-menu">
-        <a href="sell.html"><button class="sell-button">SELL</button></a>
+        <a href="sell.php"><button class="sell-button">SELL</button></a>
 
-        <a href="userProfile.html">
-            <img src="image/profile-round-1342-svgrepo-com.svg">
-            <span>Profile</span>
-        </a>
+        <a href="userProfile.php">
 
-        <a href="cart.html">
+        <div class="profile-icon">
+
+        <img src="image/profile-round-1342-svgrepo-com.svg">
+
+        <?php
+        if($totalNotification > 0){
+        ?>
+
+            <span class="profile-badge">
+                <?php echo $totalNotification; ?>
+            </span>
+
+        <?php
+        }
+        ?>
+
+    </div>
+
+    <span>Profile</span>
+
+</a>
+
+        <a href="cart.php">
             <img src="image/cart-shopping-svgrepo-com.svg">
             <span>Cart</span>
         </a>
 
-        <a href="chat.html">
-            <img src="image/message-circle-chat-svgrepo-com.svg">
-            <span>Message</span>
-        </a>
-
-        <a href="bookings.html">
-            <img src="image/calendar-days-svgrepo-com.svg">
-            <span>Booking</span>
-        </a>
     </div>
 
 </nav>
@@ -61,37 +171,71 @@
 
         <section class="spotlight-section">
 
-            <div class="spotlight-card">
-                <div class="spotlight-image"><img src="image/product 1.jpg" alt="Spotlight Product"></div>
+        <a href="product-detail.php?id=<?php echo $productSpotlight['preloved_id']; ?>">
 
-                <div class="spotlight-info">
-                    <h2>Gaming Mouse</h2>
-                    <p>Best Seller Product</p>
-                </div>
-            </div>
+        <div class="spotlight-card">
 
-            <div class="spotlight-card">
-                <div class="spotlight-image"><img src="image/service 1.jpg" alt="Spotlight Service"></div>
+        <div class="spotlight-image">
 
-                <div class="spotlight-info">
-                    <h2>Tutor Programming</h2>
-                    <p>Popular Service</p>
-                </div>
-            </div>
+            <img src="uploads/<?php echo $productSpotlight['image']; ?>">
 
-        </section>
+        </div>
+
+        <div class="spotlight-info">
+
+            <h2>
+                <?php echo $productSpotlight['name']; ?>
+            </h2>
+
+            <p>
+                Recently Added
+            </p>
+
+        </div>
+
+    </div>
+
+        </a>
+
+
+    <a href="service-detail.php?id=<?php echo $serviceSpotlight['service_id']; ?>">
+    <div class="spotlight-card">
+
+        <div class="spotlight-image">
+
+            <img src="uploads/<?php echo $serviceSpotlight['image']; ?>">
+        </div>
+
+        <div class="spotlight-info">
+
+            <h2>
+                <?php echo $serviceSpotlight['name']; ?>
+            </h2>
+
+            <p>
+                Most Booked Service
+                <?php echo $serviceSpotlight['total_booking']; ?>
+                Bookings
+            </p>
+
+        </div>
+
+    </div>
+    </a>
+
+</section>
 
         <!--Category Section-->
         <section class="category-section">
 
-            <a href="PrelovedItemList.html" class="category-link">
+            <a href="PrelovedItemList.php" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/preloved.jpg"></div>
                 <h3>Preloved</h3>
             </div>
             </a>
 
-            <a href="ServiceList.html" class="category-link">
+            <a href="ServiceList.php" class="category-link">
             <div class="category-card">
                 <div class="category-icon"><img src="image/service.jpg"></div>
                 <h3>Service</h3>
@@ -103,92 +247,65 @@
         <!--Product Grid-->
         <section class="product-section">
 
-            
-            
         <div class="product-grid">
             <p id="noResult" class="no-result">
                 No product found
             </p>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 1.jpg">
-                </div>
+            <?php foreach($items as $row){ ?>
 
-                <h3>Gaming Mouse</h3>
-                <p>RM 50.00</p>
-                <button>View Details</button>
-            </div>
+<div class="product-card">
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 1.jpg">
-                </div>
+    <div class="product-image">
 
-                <h3>Tutor Programming</h3>
-                <p>RM 50.00</p>
-                <button>Book Now</button>
-            </div>
+        <?php if($row['type'] == 'product'){ ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 2.jpg">
-                </div>
+            <img src="uploads/<?php echo $row['image']; ?>">
 
-                <h3>Mechanical Keyboard</h3>
-                <p>RM 80.00</p>
-                <button>View Details</button>
-            </div>
+        <?php } else { ?>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 2.jpg">
-                </div>
+            <img src="uploads/<?php echo $row['image']; ?>">
 
-                <h3>Laundry</h3>
-                <p>RM 15.00</p>
-                <button>Book Now</button>
-            </div>
+        <?php } ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 3.jpg">
-                </div>
+    </div>
 
-                <h3>Desporte Futsal Shoes</h3>
-                <p>RM 300.00</p>
-                <button>View Details</button>
-            </div>
+    <h3><?php echo $row['name']; ?></h3>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 3.jpg">
-                </div>
+    <p>RM <?php echo $row['price']; ?></p>
 
-                <h3>Personal Shopper</h3>
-                <p>RM 10.00</p>
-                <button>Book Now</button>
-            </div>
+    <?php if($row['type'] == 'product'){ ?>
 
-            <div class="product-card">
-                <div class="product-image">
-                    <img src="image/product 4.jpg">
-                </div>
+    <?php
+if($row['status'] == "Available"){
+?>
+<a href="product-detail.php?id=<?php echo $row['preloved_id']; ?>">
+    <button>Buy Now</button>
+</a>
+<?php
+}
+else{
+?>
 
-                <h3>Wallet</h3>
-                <p>RM 50.00</p>
-                <button>View Details</button>
-            </div>
+<button class="sold-btn" disabled>
+    Sold Out
+</button>
 
-             <div class="product-card">
-                <div class="product-image">
-                    <img src="image/service 4.jpg">
-                </div>
+<?php
+}
+?>
 
-                <h3>Phone Repair</h3>
-                <p>RM 50.00</p>
-                <button>Book Now</button>
-            </div>
+<?php } else { ?>
+
+<a href="service-detail.php?id=<?php echo $row['service_id']; ?>">
+    <button>Book Now</button>
+</a>
+
+<?php } ?>
+
+</div>
+
+<?php } ?>
 
         </div>
 
@@ -202,11 +319,6 @@
 <footer class="footer">
     <div class="footer-left">
         <p>&#169 2026 UTeM ServaMart </p>
-    </div>
-    <div class="footer-right">
-        <a href="#">Help Centre</a>
-        <span>|</span>
-        <a href="#">Contact Us</a>
     </div>
     
 </footer>

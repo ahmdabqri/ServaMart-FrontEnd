@@ -5,50 +5,56 @@ include ('config.php');
 if(isset($_POST['registerBtn'])){
 
     $name = $_POST['username'];
-    $email = $_POST['email'];
+    $email = trim($_POST['email']); 
     $password = $_POST['password'];
 
+    // CHECK IF EMAIL IS A VALID UTeM STUDENT EMAIL
+    $allowedDomain = "@student.utem.edu.my";
+    
+    // CHECK IF EMAIL ENDS WITH THE ALLOWED DOMAIN (CASE-INSENSITIVE)
+    if (substr(strtolower($email), -strlen($allowedDomain)) !== $allowedDomain) {
+        echo "
+        <script>
+            alert('Registration failed: You must use a valid UTeM student email.');
+            window.history.back();
+        </script>
+        ";
+        exit(); 
+    }
+
+    // CHECK IF EMAIL ALREADY EXISTS IN THE DATABASE
     $checkEmail = mysqli_query(
         $conn,
-        "SELECT * FROM userr WHERE email='$email'"
+        "SELECT * FROM userr 
+        WHERE email='$email'"
     );
 
     if(mysqli_num_rows($checkEmail) > 0){
-
         echo "
         <script>
             alert('Email already exists');
         </script>
         ";
-
     }
     else{
+        // HASH THE PASSWORD BEFORE STORING
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $sql = "INSERT INTO userr
-        (name,email,password,role)
-        VALUES
-        ('$name','$email','$password','user')";
+        $sql = "INSERT INTO userr (name,email,password,role) VALUES ('$name','$email','$hashedPassword','user')";
 
         if(mysqli_query($conn,$sql)){
-
             echo "
             <script>
                 alert('Registration Successful');
                 window.location.href='login.php';
             </script>
             ";
-
         }
         else{
-
             die(mysqli_error($conn));
-
         }
-
     }
-
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -63,6 +69,8 @@ if(isset($_POST['registerBtn'])){
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
+    <div></div>
     
     <div class="login-container">
 
@@ -82,7 +90,7 @@ if(isset($_POST['registerBtn'])){
 
     <h2>Create Account</h2>
 
-    <form class="login-form" id="register-formValidation" action="register.php" method="POST">
+    <form class="login-form" id="register-formValidation" action="register.php" method="POST" novalidate>
 
         <div class="form-group">
             <label for="userName">User Name</label>

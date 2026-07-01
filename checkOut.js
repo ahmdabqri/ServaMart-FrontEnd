@@ -2,8 +2,13 @@ const checkoutForm =
 document.getElementById("checkOut-formValidation");
 
 checkoutForm.addEventListener("submit", function(event){
-
     event.preventDefault();
+
+const paymentProof =
+document.getElementById("paymentProof");
+
+const paymentProofError =
+document.getElementById("paymentProofError");
 
     const fullName =
     document.getElementById("fullName").value.trim();
@@ -26,9 +31,6 @@ checkoutForm.addEventListener("submit", function(event){
     const postcode =
     document.getElementById("postcode").value.trim();
 
-    const payment =
-    document.querySelector('input[name="payment"]:checked');
-
     const fullNameError = document.getElementById("fullNameError");
     const phoneError = document.getElementById("phoneError");
     const emailError = document.getElementById("emailError");
@@ -36,7 +38,7 @@ checkoutForm.addEventListener("submit", function(event){
     const cityError = document.getElementById("cityError");
     const stateError = document.getElementById("stateError");
     const postcodeError = document.getElementById("postcodeError");
-    const paymentError = document.getElementById("paymentError");
+    
 
     // reset error
     fullNameError.textContent = "";
@@ -46,7 +48,7 @@ checkoutForm.addEventListener("submit", function(event){
     cityError.textContent = "";
     stateError.textContent = "";
     postcodeError.textContent = "";
-    paymentError.textContent = "";
+    paymentProofError.textContent = "";
 
     let isValid = true;
 
@@ -85,17 +87,17 @@ checkoutForm.addEventListener("submit", function(event){
         isValid = false;
     }
 
-    if(!payment){
-        paymentError.textContent =
-        "Please select a payment method";
-        isValid = false;
-    }
+    if(paymentProof.files.length === 0){
 
-    if(isValid){
+    paymentProofError.textContent =
+    "Please upload proof of payment.";
 
-        alert("Order placed successfully!");
-        window.location.href = "orderSuccess.html";
+    isValid = false;
 
-    }
+}
+
+if(isValid){
+    checkoutForm.submit();
+}
 
 });

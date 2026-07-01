@@ -1,0 +1,54 @@
+.review-container{
+    max-width: 700px;
+    margin: 80px auto;
+    padding: 40px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.review-container h2{
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+.form-group{
+    margin-bottom: 25px;
+}
+
+.form-group label{
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.form-group select,
+.form-group textarea{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-family: Poppins;
+    font-size: 15px;
+}
+
+.form-group textarea{
+    min-height: 150px;
+    resize: vertical;
+}
+
+.submit-review-btn{
+    width: 100%;
+    background: black;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.submit-review-btn:hover{
+    opacity: 0.9;
+}

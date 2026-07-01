@@ -85,3 +85,44 @@
     color:#888;
 
 }
+
+.review-btn{
+    background: black;
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.3s;
+    transition:0.3s ease;
+}
+
+.review-btn:hover{
+    opacity: 0.85;
+    transform:translateY(-3px);
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.reviewed-badge{
+    background: #e3f2fd;
+    color: #1565c0;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.service-title{
+
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:12px;
+    color:#111;
+
+    padding-bottom:10px;
+    border-bottom:1px solid #eee;
+
+}

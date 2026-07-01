@@ -1,36 +1,76 @@
 <?php
-
+session_start();
 include 'config.php';
 
 if(isset($_POST['loginBtn'])){
 
-    $email = $_POST['email'];
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $checkUser = mysqli_query(
-        $conn,
-        "SELECT * FROM userr
-         WHERE email='$email'
-         AND password='$password'"
-    );
+    $cleanEmail = strtolower($email);
+    $allowedDomain = "@student.utem.edu.my";
 
-    if(mysqli_num_rows($checkUser) > 0){
+    $isAdmin = ($cleanEmail === "admin@gmail.com");
+    $isStudent = (substr($cleanEmail, -strlen($allowedDomain)) === $allowedDomain);
 
+    if (!$isAdmin && !$isStudent) {
         echo "
         <script>
-            alert('Login Successful');
-            window.location.href='homepage.php';
+            alert('Unauthorized email domain.');
+            window.history.back();
         </script>
         ";
+        exit();
+    }
 
-    }else{
+    $sql = "SELECT * FROM userr WHERE email='$email'";
+    $result = mysqli_query($conn, $sql);
 
+    if(mysqli_num_rows($result) > 0){
+
+        $user = mysqli_fetch_assoc($result);
+
+        if(password_verify($password, $user['password'])){
+
+             // CHECK STATUS DULU
+            if($user['status'] == "Inactive"){
+
+            echo "
+            <script>
+                alert('Your account has been deactivated. Please contact the administrator.');
+                window.location='login.php';
+            </script>
+            ";
+            exit();
+
+        }
+
+            //create session
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['name'] = $user['name'];
+            $_SESSION['role'] = $user['role'];
+
+            if($user['role'] == 'admin'){
+                header("Location: adminDashboard.php");
+            } else {
+                header("Location: homepage.php");
+            }
+            exit();
+
+        } else {
+            echo "
+            <script>
+                alert('Invalid Email or Password');
+            </script>
+            ";
+        }
+
+    } else {
         echo "
         <script>
             alert('Invalid Email or Password');
         </script>
         ";
-
     }
 }
 ?>
@@ -72,7 +112,7 @@ if(isset($_POST['loginBtn'])){
     </p>
 
     <form class="login-form" id="login-formValidation" action="login.php"
-      method="POST">
+      method="POST" novalidate>
 
         <div class="form-group">
             <label for="email">Email</label>
@@ -100,7 +140,7 @@ if(isset($_POST['loginBtn'])){
     </form>
 
     <p class="forgot-password">
-        Forgot Password ? <a href="#">Click Here</a>
+        Forgot Password ? <a href="forgotPassword.php">Click Here</a>
     </p>
 
 </div>

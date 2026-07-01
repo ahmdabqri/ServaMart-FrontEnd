@@ -1,16 +1,15 @@
-const productBtn =
-document.getElementById("productBtn");
 
-const serviceBtn =
-document.getElementById("serviceBtn");
 
-const conditionSection =
-document.getElementById("conditionSection");
+const productBtn = document.getElementById("productBtn");
+const serviceBtn = document.getElementById("serviceBtn");
 
-const serviceFields =
-document.getElementById("serviceFields");
+const conditionSection = document.getElementById("conditionSection");
+const serviceFields = document.getElementById("serviceFields");
 
 productBtn.addEventListener("click", () => {
+
+    document.getElementById("itemType").value =
+    "product";
 
     productBtn.classList.add("active");
     serviceBtn.classList.remove("active");
@@ -22,6 +21,8 @@ productBtn.addEventListener("click", () => {
 
 serviceBtn.addEventListener("click", () => {
 
+    document.getElementById("itemType").value = "service";
+
     serviceBtn.classList.add("active");
     productBtn.classList.remove("active");
 
@@ -30,30 +31,29 @@ serviceBtn.addEventListener("click", () => {
 
 });
 
-const postBtn =
-document.querySelector(".post-btn");
+const postBtn = document.querySelector(".post-btn");
 
 postBtn.addEventListener("click", () => {
 
     const itemName =
-    document.getElementById("itemName").value.trim();
+        document.getElementById("itemName").value.trim();
 
     const category =
-    document.getElementById("category").value;
+        document.getElementById("category").value;
 
     const description =
-    document.getElementById("description").value.trim();
+        document.getElementById("description").value.trim();
 
     const price =
-    document.getElementById("price").value.trim();
+        document.getElementById("price").value.trim();
 
     const location =
-    document.getElementById("location");
+        document.getElementById("location");
 
     const availableDate =
-    document.getElementById("availableDate");
+        document.getElementById("availableDate");
 
-    // reset error
+    // Reset error
 
     document.getElementById("itemNameError").textContent = "";
     document.getElementById("categoryError").textContent = "";
@@ -99,33 +99,28 @@ postBtn.addEventListener("click", () => {
 
     if(price === ""){
 
-    document.getElementById("priceError")
-    .textContent = "Price is required";
+        document.getElementById("priceError")
+        .textContent = "Price is required";
 
-    isValid = false;
-}
-else if(isNaN(price)){
+        isValid = false;
 
-    document.getElementById("priceError")
-    .textContent =
-    "Price must be a number";
+    }
+    else if(Number(price) <= 0){
 
-    isValid = false;
-}
-else if(Number(price) <= 0){
+        document.getElementById("priceError")
+        .textContent = "Price must be greater than RM 0";
 
-    document.getElementById("priceError")
-    .textContent =
-    "Price must be greater than RM 0";
+        isValid = false;
+    }
 
-    isValid = false;
-}
+    // Product Validation
 
     if(productBtn.classList.contains("active")){
 
         const conditionSelected =
         document.querySelector(
-        ".condition-buttons .active-condition");
+            'input[name="condition"]:checked'
+        );
 
         if(!conditionSelected){
 
@@ -135,8 +130,9 @@ else if(Number(price) <= 0){
 
             isValid = false;
         }
-
     }
+
+    // Service Validation
 
     if(serviceBtn.classList.contains("active")){
 
@@ -161,30 +157,9 @@ else if(Number(price) <= 0){
 
     if(isValid){
 
-        alert("Item Posted Successfully!");
+        document.querySelector("form").submit();
 
     }
-
-});
-
-const conditionButtons =
-document.querySelectorAll(
-".condition-buttons button"
-);
-
-conditionButtons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-        conditionButtons.forEach(btn =>
-            btn.classList.remove(
-            "active-condition")
-        );
-
-        button.classList.add(
-        "active-condition");
-
-    });
 
 });
 
@@ -212,6 +187,9 @@ imageUploads.forEach(input => {
             new FileReader();
 
             reader.onload = function(e){
+
+
+                console.log(file.name);
 
                 previewImage.src =
                 e.target.result;
