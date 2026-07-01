@@ -5,6 +5,36 @@ include 'config.php';
 
 $user_id = $_SESSION['user_id'];
 
+if(
+    !isset($_FILES['paymentProof']) ||
+    $_FILES['paymentProof']['error'] != 0
+){
+
+    echo "
+    <script>
+
+    alert('Please upload your proof of payment.');
+
+    window.history.back();
+
+    </script>
+    ";
+
+    exit();
+
+}
+
+$paymentProof =
+$_FILES['paymentProof']['name'];
+
+$tempProof =
+$_FILES['paymentProof']['tmp_name'];
+
+move_uploaded_file(
+    $tempProof,
+    "uploads/payment/" . $paymentProof
+);
+
 $fullName = $_POST['fullName'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
