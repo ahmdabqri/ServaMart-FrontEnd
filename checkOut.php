@@ -270,10 +270,12 @@ $query = mysqli_query(
     <h3>Proof Of Payment</h3>
 
     <input
-        type="file"
-        name="paymentProof"
-        accept="image/*"
-        required>
+    type="file"
+    id="paymentProof"
+    name="paymentProof"
+    accept="image/*">
+
+<small id="paymentProofError" class="error"></small>
 
 </div>
 
